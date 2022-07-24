@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TankController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,16 +22,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-//Route::prefix('users')->as('users.')->group(
-//    function(){
-//        Route::get('/',[App\Http\Controllers\UserController::class, 'index'])->name('index')->middleware('auth');
-//        Route::get('/show',[App\Http\Controllers\UserController::class, 'get_all_users'])->name('get_all')->middleware('auth');
-//        Route::post('/store',[App\Http\Controllers\UserController::class, 'store'])->name('store')->middleware('auth');
-//        Route::get('/edit',[App\Http\Controllers\UserController::class, 'edit'])->name('edit')->middleware('auth');
-//        Route::get('/update',[App\Http\Controllers\UserController::class, 'update'])->name('update');
-//        Route::delete('/delete', [\App\Http\Controllers\UserController::class, 'delete'])->name('delete')->middleware('auth');
-//    }
-//);
 Route::prefix('users')->as('users.')->group(
     function() {
         Route::get('/', [UserController::class, 'index'])->name('index');
@@ -42,8 +33,6 @@ Route::prefix('users')->as('users.')->group(
     }
 );
 
-Route::get('dashboard/water_level',[\App\Http\Controllers\TankController::class, 'tank1_water_level'])->name('water_level');
-
-
+Route::get('dashboard/water_level',[TankController::class, 'tank1_water_level'])->name('water_level');
 
 require __DIR__.'/auth.php';

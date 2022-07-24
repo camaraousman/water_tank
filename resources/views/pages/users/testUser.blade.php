@@ -43,105 +43,128 @@
                 <div class="d-flex flex-column-fluid">
                     <!--begin::Container-->
                     <div class="container">
-                        {{-- add new employee modal start --}}
-                        <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        {{-- add new user modal start --}}
+                        <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                              data-bs-backdrop="static" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Add New Employee</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Yeni Kullanıcı Ekle</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <form action="#" method="POST" id="add_employee_form" enctype="multipart/form-data">
+                                    <form action="#" method="POST" id="add_user_form" enctype="multipart/form-data">
                                         @csrf
                                         <div class="modal-body p-4 bg-light">
                                             <div class="row">
-                                                <div class="col-lg">
-                                                    <label for="name">Full Name</label>
-                                                    <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+                                                <div class="my-2">
+                                                    <label for="name">Ad Soyadı</label>
+                                                    <input type="text" name="name" class="form-control" placeholder="Adı Giriniz" required>
                                                 </div>
                                                 <div class="col-lg">
-                                                    <label for="password">Password</label>
-                                                    <input type="password" name="password" class="form-control" placeholder="password" required>
+                                                    <label for="password">Şifre</label>
+                                                    <input type="password" name="password" class="form-control" placeholder="Şifre Giriniz" required>
+                                                </div>
+                                                <div class="col-lg">
+                                                    <label for="password">Şifre Tekrar</label>
+                                                    <input type="password" name="passwordConfirm" class="form-control" placeholder="Şifreyi Tekrar Giriniz" required>
                                                 </div>
                                             </div>
                                             <div class="my-2">
-                                                <label for="email">User ID</label>
-                                                <input type="text" name="user_id" class="form-control" placeholder="User ID" required>
+                                                <label for="user_id">Kullanıcı Kodu</label>
+                                                <input type="text" name="user_id" class="form-control" required>
                                             </div>
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" id="add_employee_btn" class="btn btn-primary">Add Employee</button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">İptal</button>
+                                            <button type="submit" id="add_user_btn" class="btn btn-primary">Kullanıcı Ekle</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        {{-- add new employee modal end --}}
+                        {{-- add new user modal end --}}
 
-                        {{-- edit employee modal start --}}
-                        <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        {{-- edit user modal start --}}
+                        <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                              data-bs-backdrop="static" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Edit Employee</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Kullanıcı Güncelle</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <form action="#" method="POST" id="edit_employee_form" enctype="multipart/form-data">
+                                    <form action="#" method="POST" id="edit_user_form">
                                         @csrf
-                                        <input type="hidden" name="emp_id" id="emp_id">
-                                        <input type="hidden" name="emp_avatar" id="emp_avatar">
+
                                         <div class="modal-body p-4 bg-light">
                                             <div class="row">
                                                 <div class="col-lg">
-                                                    <label for="name">Name</label>
-                                                    <input type="text" name="name" id="name" class="form-control" placeholder="Full Name" required>
+                                                    <label for="name">Ad Soyadı</label>
+                                                    <input type="text" name="name" id="name" class="form-control" placeholder="Ad Soyadı Giriniz" required>
                                                 </div>
                                                 <div class="col-lg">
                                                     <label for="name">Password</label>
-                                                    <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                                                    <input type="password" name="password" id="password" class="form-control" placeholder="Yeni Şifre Girebilirsiniz">
                                                 </div>
                                             </div>
                                             <div class="my-2">
-                                                <label for="user_id">User ID</label>
+                                                <label for="user_id">Kullanıcı Kodu</label>
                                                 <input type="text" name="user_id" id="user_id" class="form-control" placeholder="User ID" required>
                                             </div>
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" id="edit_employee_btn" class="btn btn-success">Update Employee</button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">İptal</button>
+                                            <button type="submit" id="edit_user_btn" class="btn btn-success">Kullanıcı Güncelle</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        {{-- edit employee modal end --}}
+                        {{-- edit user modal end --}}
 
-                        <body class="bg-light">
-                        <div class="container">
-                            <div class="row my-5">
-                                <div class="col-lg-12">
-                                    <div class="card shadow">
-                                        <div class="card-header bg-danger d-flex justify-content-between align-items-center">
-                                            <h3 class="text-light">Manage Employees</h3>
-                                            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addEmployeeModal"><i
-                                                    class="bi-plus-circle me-2"></i>Add New Employee</button>
-                                        </div>
-                                        <div class="card-body" id="show_all_employees">
-                                            <h1 class="text-center text-secondary my-5">Loading...</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <!--begin::Kullanıcı Yönetimi-->
+            <!--begin::Card-->
+            <div class="card card-custom">
+                <!--begin::Header-->
+                <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                    <div class="card-title">
+                        <h3 class="card-label">Kullanıcı Yönetimi
+                            <span class="d-block text-muted pt-2 font-size-sm">Sisteme kayıtlı kullanıcıları kolayca yönetebilirsiniz.</span></h3>
                     </div>
-                    <!--end::Container-->
-                </div>
-                <!--end::Entry-->
+                    <div class="card-toolbar">
+
+                <!--begin::Button-->
+                <a href="#" class="btn btn-light-primary font-weight-bolder" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <span class="svg-icon svg-icon-md">
+                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24" />
+                        <circle fill="#000000" cx="9" cy="15" r="6" />
+                        <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                    </g>
+                </svg>
+                <!--end::Svg Icon-->
+            </span>Yeni Kullanıcı Ekle</a>
+                <!--end::Button-->
+
+        </div>
+    </div>
+        <!--end::Header-->
+
+        <div class="card-body" id="show_all_users">
+            <h1 class="text-center text-secondary my-5">Yükleniyor...</h1>
+        </div>
+    </div>
+        <!--end::Card-->
+        <!--end::Kullanıcı Yönetimi-->
+
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
             </div>
             <!--end::Content-->
             @include('partials.footer')
@@ -159,11 +182,11 @@
 <script>
     $(function() {
 
-        // add new employee ajax request
-        $("#add_employee_form").submit(function(e) {
+        // add new user ajax request
+        $("#add_user_form").submit(function(e) {
             e.preventDefault();
             const fd = new FormData(this);
-            $("#add_employee_btn").text('Adding...');
+            $("#add_user_btn").text('Ekleniyor...');
             $.ajax({
                 url: '{{ route('users.store') }}',
                 method: 'post',
@@ -175,20 +198,20 @@
                 success: function(response) {
                     if (response.status == 200) {
                         Swal.fire(
-                            'Added!',
-                            'Employee Added Successfully!',
+                            'İşlem Başarılı!',
+                            'Kullanıcı Başırayla Eklenmiştır!',
                             'success'
                         )
-                        fetchAllEmployees();
+                        fetchAllUsers();
                     }
-                    $("#add_employee_btn").text('Add Employee');
-                    $("#add_employee_form")[0].reset();
-                    $("#addEmployeeModal").modal('hide');
+                    $("#add_user_btn").text('Kullanıcı Ekle');
+                    $("#add_user_form")[0].reset();
+                    $("#addUserModal").modal('hide');
                 }
             });
         });
 
-        // edit employee ajax request
+        // edit users ajax request
         $(document).on('click', '.editIcon', function(e) {
             e.preventDefault();
             let id = $(this).attr('id');
@@ -200,20 +223,18 @@
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    console.log(id);
                     $("#name").val(response.name);
                     $("#password").val(response.password);
                     $("#user_id").val(response.user_id);
-
                 }
             });
         });
 
-        // update employee ajax request
-        $("#edit_employee_form").submit(function(e) {
+        // update users ajax request
+        $("#edit_user_form").submit(function(e) {
             e.preventDefault();
             const fd = new FormData(this);
-            $("#edit_employee_btn").text('Updating...');
+            $("#edit_user_btn").text('Güncelleniyor...');
             $.ajax({
                 url: '{{ route('users.update') }}',
                 method: 'post',
@@ -225,32 +246,33 @@
                 success: function(response) {
                     if (response.status == 200) {
                         Swal.fire(
-                            'Updated!',
-                            'Employee Updated Successfully!',
+                            'İşlem Başarılı!',
+                            'Kullanıcı Başarıyla Güncellenmiştir!',
                             'success'
                         )
-                        fetchAllEmployees();
+                        fetchAllUsers();
                     }
-                    $("#edit_employee_btn").text('Update Employee');
-                    $("#edit_employee_form")[0].reset();
-                    $("#editEmployeeModal").modal('hide');
+                    $("#edit_user_btn").text('Kullanıcı Güncelle');
+                    $("#edit_user_form")[0].reset();
+                    $("#editUserModal").modal('hide');
                 }
             });
         });
 
-        // delete employee ajax request
+        // delete user ajax request
         $(document).on('click', '.deleteIcon', function(e) {
             e.preventDefault();
             let id = $(this).attr('id');
             let csrf = '{{ csrf_token() }}';
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Onaylıyor Musunuz?',
+                text: "Kaydı Geri Alamazsınız!",
                 icon: 'warning',
                 showCancelButton: true,
+                cancelButtonText: 'İptal',
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'Evet, Sil!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -263,26 +285,26 @@
                         success: function(response) {
                             console.log(response);
                             Swal.fire(
-                                'Deleted!',
-                                'Your file has been deleted.',
+                                'İşlem Başarılı!',
+                                'Kayıt Başarıyla Silinmiştir.',
                                 'success'
                             )
-                            fetchAllEmployees();
+                            fetchAllUsers();
                         }
                     });
                 }
             })
         });
 
-        // fetch all employees ajax request
-        fetchAllEmployees();
+        // fetch all users ajax request
+        fetchAllUsers();
 
-        function fetchAllEmployees() {
+        function fetchAllUsers() {
             $.ajax({
                 url: '{{ route('users.fetchAll') }}',
                 method: 'get',
                 success: function(response) {
-                    $("#show_all_employees").html(response);
+                    $("#show_all_users").html(response);
                     $("table").DataTable({
                         order: [0, 'desc']
                     });
