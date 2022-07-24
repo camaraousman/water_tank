@@ -121,7 +121,7 @@
 
                 <!--begin telefon numarla-->
                 <div class="menu-item menu-accordion">
-                    <a href="#">
+                    <a href="{{route('phones.index')}}">
                         <span class="menu-link">
                             <span class="menu-icon">
 
