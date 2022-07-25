@@ -1,32 +1,8 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@include('partials.head')
 
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css' />
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css' />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.css" />
+@section('extra_css')
 
-
-    <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-    <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-    <!--begin::Fonts-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-    <!--end::Fonts-->
-    <!--begin::Page Vendor Stylesheets(used by this page)-->
-    <link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="assets/plugins/custom/vis-timeline/vis-timeline.bundle.css" rel="stylesheet" type="text/css" />
-    <!--end::Page Vendor Stylesheets-->
-    <!--begin::Global Stylesheets Bundle(used by all pages)-->
-    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-
-    <title>Document</title>
-</head>
+@endsection
 <body id="kt_body" class="@if(!isset($minimize)) header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading @else header-fixed header-mobile-fixed aside-enabled aside-fixed aside-minimize aside-minimize-hoverable @endif">
 
 <!--begin::Main-->
@@ -66,7 +42,7 @@
                                                 </div>
                                                 <div class="col-lg">
                                                     <label for="password">Şifre Tekrar</label>
-                                                    <input type="password" name="passwordConfirm" class="form-control" placeholder="Şifreyi Tekrar Giriniz" required>
+                                                    <input type="password" name="password_confirmation" class="form-control" placeholder="Şifreyi Tekrar Giriniz" required>
                                                 </div>
                                             </div>
                                             <div class="my-2">
@@ -174,6 +150,7 @@
     <!--end::Page-->
 </div>
 <!--end::Main-->
+@include('partials.footer_script')
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js'></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.js"></script>
@@ -207,6 +184,7 @@
                     $("#add_user_btn").text('Kullanıcı Ekle');
                     $("#add_user_form")[0].reset();
                     $("#addUserModal").modal('hide');
+                    $(".modal-backdrop").remove();
                 }
             });
         });
@@ -315,5 +293,3 @@
 </script>
 </body>
 
-</body>
-</html>

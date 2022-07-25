@@ -148,6 +148,6 @@
     <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
 
     <script type="text/javascript" src="{{asset('assets/js/custom/tank_animation.js')}}"></script>
-{{--    <script type="text/javascript" src="{{asset('assets/js/custom/tank_2_animation.js')}}"></script>--}}
+    <script type="text/javascript" src="{{asset('assets/js/custom/tank_2_animation.js')}}"></script>
 
 @endsection

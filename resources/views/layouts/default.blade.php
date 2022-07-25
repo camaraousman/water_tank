@@ -35,6 +35,8 @@
     <!--end::Page-->
 </div>
 <!--end::Main-->
+@include('partials.footer_script')
 @yield('extra_script')
+
 </body>
 </html>

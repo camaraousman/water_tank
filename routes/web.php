@@ -2,26 +2,36 @@
 
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\TankController;
+use App\Http\Controllers\TankLevelLogController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Login and Dashboard
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
+require __DIR__.'/auth.php';
+Route::get('/login', function () {
     return view('pages.login');
-})->middleware(['guest'])->name('sign-in');
+})->middleware(['guest'])->name('login');
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Users
+|--------------------------------------------------------------------------
+|
+|
+*/
 
 Route::prefix('users')->as('users.')->group(
     function() {
@@ -34,6 +44,14 @@ Route::prefix('users')->as('users.')->group(
     }
 );
 
+/*
+|--------------------------------------------------------------------------
+| Phones
+|--------------------------------------------------------------------------
+|
+|
+*/
+
 Route::prefix('phones')->as('phones.')->group(
     function() {
         Route::get('/', [PhoneController::class, 'index'])->name('index')->middleware(['auth']);
@@ -43,9 +61,43 @@ Route::prefix('phones')->as('phones.')->group(
     }
 );
 
+/*
+|--------------------------------------------------------------------------
+| Reports
+|--------------------------------------------------------------------------
+|
+|
+*/
+
+Route::prefix('logs')->group(
+    function() {
+        Route::prefix('waterlevellogs')->as('waterlevellogs.')->group(
+            function() {
+                Route::get('/', [TankLevelLogController::class, 'index'])->name('index')->middleware(['auth']);
+                Route::post('/store', [TankLevelLogController::class, 'store'])->name('store')->middleware(['auth']);
+                Route::get('/fetchall', [TankLevelLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
+            }
+        );
+        Route::prefix('alarmlogs')->as('alarmlogs.')->group(
+            function() {
+                Route::get('/', [TankLevelLogController::class, 'index'])->name('index')->middleware(['auth']);
+                Route::post('/store', [TankLevelLogController::class, 'store'])->name('store')->middleware(['auth']);
+                Route::get('/fetchall', [TankLevelLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
+            }
+        );
+        Route::prefix('metercontrollogs')->as('metercontrollogs.')->group(
+            function() {
+                Route::get('/', [TankLevelLogController::class, 'index'])->name('index')->middleware(['auth']);
+                Route::post('/store', [TankLevelLogController::class, 'store'])->name('store')->middleware(['auth']);
+                Route::get('/fetchall', [TankLevelLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
+            }
+        );
+    }
+);
+
 
 
 
 Route::get('dashboard/water_level',[TankController::class, 'tank1_water_level'])->name('water_level');
 
-require __DIR__.'/auth.php';
+
