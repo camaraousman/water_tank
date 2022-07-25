@@ -1,25 +1,6 @@
-@include('partials.head')
+@extends('layouts.default')
 
-@section('extra_css')
-
-@endsection
-
-<body id="kt_body" class="@if(!isset($minimize)) header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading @else header-fixed header-mobile-fixed aside-enabled aside-fixed aside-minimize aside-minimize-hoverable @endif">
-
-<!--begin::Main-->
-<div class="d-flex flex-column flex-root">
-    <!--begin::Page-->
-    <div class="d-flex flex-row flex-column-fluid page">
-        @include('partials.aside')
-        <!--begin::Wrapper-->
-        <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-            @include('partials.header')
-            <!--begin::Content-->
-            <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-                <!--begin::Entry-->
-                <div class="d-flex flex-column-fluid">
-                    <!--begin::Container-->
-                    <div class="container">
+@section('content')
                         {{-- add new phone number modal start --}}
                         <div class="modal fade" id="addPhoneModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                              data-bs-backdrop="static" aria-hidden="true">
@@ -85,22 +66,10 @@
                         </div>
                         <!--end::Card-->
                         <!--end::Kullanıcı Yönetimi-->
+@endsection
 
-                    </div>
-                    <!--end::Container-->
-                </div>
-                <!--end::Entry-->
-            </div>
-            <!--end::Content-->
-            @include('partials.footer')
-        </div>
-        <!--end::Wrapper-->
-    </div>
-    <!--end::Page-->
-</div>
-<!--end::Main-->
-@include('partials.footer_script')
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+
+@section('extra_script')
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js'></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -133,6 +102,7 @@
                     $("#add_phone_btn").text('Kullanıcı Ekle');
                     $("#add_phone_form")[0].reset();
                     $("#addPhoneModal").modal('hide');
+                    $(".modal-backdrop").toggle();
                 }
             });
         });
@@ -193,6 +163,6 @@
         }
     });
 </script>
-</body>
+@endsection
 
 

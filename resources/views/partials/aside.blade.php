@@ -3,7 +3,7 @@
     <!--begin::Brand-->
     <div class="aside-logo flex-column-auto" id="kt_aside_logo">
         <!--begin::Logo-->
-        <a href="{{url('/dashboard')}}">
+        <a href="{{route('dashboard')}}">
             <img alt="Logo" src="{{asset('assets/media/logos/teta_only_logo.png')}}" class="h-35px logo" />
         </a>
         <!--end::Logo-->
@@ -29,7 +29,7 @@
             <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true" data-kt-menu-expand="false">
                 <!--begin operator page-->
                 <div class="menu-item menu-accordion">
-                    <a href="{{url('/dashboard')}}">
+                    <a href="{{route('dashboard')}}">
                         <span class="menu-link">
 
                             <span class="menu-icon">
@@ -66,7 +66,7 @@
                         </span>
                         <div class="menu-sub menu-sub-accordion menu-active-bg">
                             <div class="menu-item">
-                                <a class="menu-link" href="../../demo1/dist/account/overview.html">
+                                <a class="menu-link" href="{{route('alarmlogs.index')}}">
                                                     <span class="menu-bullet">
                                                         <span class="bullet bullet-dot"></span>
                                                     </span>
@@ -76,7 +76,7 @@
                         </div>
                         <div class="menu-sub menu-sub-accordion menu-active-bg">
                             <div class="menu-item">
-                                <a class="menu-link" href="../../demo1/dist/account/overview.html">
+                                <a class="menu-link" href="{{route('tanklevellogs.index')}}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -86,11 +86,11 @@
                         </div>
                         <div class="menu-sub menu-sub-accordion menu-active-bg">
                             <div class="menu-item">
-                                <a class="menu-link" href="../../demo1/dist/account/overview.html">
+                                <a class="menu-link" href="{{route('metercontrollogs.index')}}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
-                                    <span class="menu-title">Sayaç Raporu</span>
+                                    <span class="menu-title">Metre Raporu</span>
                                 </a>
                             </div>
                         </div>

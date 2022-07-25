@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ALarmLogController;
+use App\Http\Controllers\MeterControlLogController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\TankController;
 use App\Http\Controllers\TankLevelLogController;
@@ -71,7 +73,7 @@ Route::prefix('phones')->as('phones.')->group(
 
 Route::prefix('logs')->group(
     function() {
-        Route::prefix('waterlevellogs')->as('waterlevellogs.')->group(
+        Route::prefix('tanklevellogs')->as('tanklevellogs.')->group(
             function() {
                 Route::get('/', [TankLevelLogController::class, 'index'])->name('index')->middleware(['auth']);
                 Route::post('/store', [TankLevelLogController::class, 'store'])->name('store')->middleware(['auth']);
@@ -80,16 +82,16 @@ Route::prefix('logs')->group(
         );
         Route::prefix('alarmlogs')->as('alarmlogs.')->group(
             function() {
-                Route::get('/', [TankLevelLogController::class, 'index'])->name('index')->middleware(['auth']);
-                Route::post('/store', [TankLevelLogController::class, 'store'])->name('store')->middleware(['auth']);
-                Route::get('/fetchall', [TankLevelLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
+                Route::get('/', [ALarmLogController::class, 'index'])->name('index')->middleware(['auth']);
+                Route::post('/store', [ALarmLogController::class, 'store'])->name('store')->middleware(['auth']);
+                Route::get('/fetchall', [ALarmLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
             }
         );
         Route::prefix('metercontrollogs')->as('metercontrollogs.')->group(
             function() {
-                Route::get('/', [TankLevelLogController::class, 'index'])->name('index')->middleware(['auth']);
-                Route::post('/store', [TankLevelLogController::class, 'store'])->name('store')->middleware(['auth']);
-                Route::get('/fetchall', [TankLevelLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
+                Route::get('/', [MeterControlLogController::class, 'index'])->name('index')->middleware(['auth']);
+                Route::post('/store', [MeterControlLogController::class, 'store'])->name('store')->middleware(['auth']);
+                Route::get('/fetchall', [MeterControlLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
             }
         );
     }
