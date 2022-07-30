@@ -5,6 +5,7 @@ use App\Http\Controllers\MeterControlLogController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\TankController;
 use App\Http\Controllers\TankLevelLogController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -83,8 +84,7 @@ Route::prefix('logs')->group(
         Route::prefix('alarmlogs')->as('alarmlogs.')->group(
             function() {
                 Route::get('/', [ALarmLogController::class, 'index'])->name('index')->middleware(['auth']);
-                Route::post('/store', [ALarmLogController::class, 'store'])->name('store')->middleware(['auth']);
-                Route::get('/fetchall', [ALarmLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
+                Route::post('/fetchall', [ALarmLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
             }
         );
         Route::prefix('metercontrollogs')->as('metercontrollogs.')->group(
@@ -98,8 +98,6 @@ Route::prefix('logs')->group(
 );
 
 
-
-
-Route::get('dashboard/water_level',[TankController::class, 'tank1_water_level'])->name('water_level');
-
+Route::get('/test',[TestController::class, 'test'])->name('test')->middleware('auth');
+Route::post('/test/fetch_data',[TestController::class, 'fetch_data'])->name('fetch_data')->middleware('auth');
 

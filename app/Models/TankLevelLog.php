@@ -9,7 +9,15 @@ class TankLevelLog extends Model
 {
     use HasFactory;
 
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
+
     protected $fillable = [
-      'water_level'
+      'water_level',
+        'tank_id',
+        'created_at',
+        'updated_at'
     ];
 }

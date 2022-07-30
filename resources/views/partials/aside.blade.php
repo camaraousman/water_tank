@@ -64,16 +64,7 @@
                             <span class="menu-title">Raporlar</span>
                             <span class="menu-arrow"></span>
                         </span>
-                        <div class="menu-sub menu-sub-accordion menu-active-bg">
-                            <div class="menu-item">
-                                <a class="menu-link" href="{{route('alarmlogs.index')}}">
-                                                    <span class="menu-bullet">
-                                                        <span class="bullet bullet-dot"></span>
-                                                    </span>
-                                    <span class="menu-title">Alarm Raporu</span>
-                                </a>
-                            </div>
-                        </div>
+
                         <div class="menu-sub menu-sub-accordion menu-active-bg">
                             <div class="menu-item">
                                 <a class="menu-link" href="{{route('tanklevellogs.index')}}">
@@ -84,6 +75,18 @@
                                 </a>
                             </div>
                         </div>
+
+                        <div class="menu-sub menu-sub-accordion menu-active-bg">
+                            <div class="menu-item">
+                                <a class="menu-link" href="{{route('alarmlogs.index')}}">
+                                                    <span class="menu-bullet">
+                                                        <span class="bullet bullet-dot"></span>
+                                                    </span>
+                                    <span class="menu-title">Alarm Raporu</span>
+                                </a>
+                            </div>
+                        </div>
+
                         <div class="menu-sub menu-sub-accordion menu-active-bg">
                             <div class="menu-item">
                                 <a class="menu-link" href="{{route('metercontrollogs.index')}}">

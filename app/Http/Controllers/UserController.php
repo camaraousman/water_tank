@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\Console\Input\Input;
 
 class UserController extends Controller
 {
@@ -69,11 +71,33 @@ class UserController extends Controller
     // handle insert a new user ajax request
     public function store(Request $request) {
 
-        $userData = ['name' => $request->name, 'password' => $request->password, 'user_id' => $request->user_id];
-        User::create($userData);
-        return response()->json([
-            'status' => 200,
-        ]);
+        $rules = array(
+            "name"      => "required|string|unique:brands|max:255",
+            "password"   => "required|max:255",
+            "password_confirmation"     => "required|same:password|max:255",
+        );
+
+        $this->validate($request, $rules);
+
+        $validator = Validator::make($request->all(), $rules);
+        if($validator->fails()){
+            return back()->withInput()->withErrors($validator);
+        }else{
+            $userData = ['name' => $request->name, 'password' => $request->password, 'user_id' => $request->user_id];
+            User::create($userData);
+            return response()->json([
+                'status' => 200,
+            ]);
+        }
+
+
+
+
+//        $userData = ['name' => $request->name, 'password' => $request->password, 'user_id' => $request->user_id];
+//        User::create($userData);
+//        return response()->json([
+//            'status' => 200,
+//        ]);
     }
 
     // handle edit an user ajax request

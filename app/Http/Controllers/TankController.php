@@ -8,8 +8,25 @@ use Illuminate\Http\Request;
 class TankController extends Controller
 {
     public function tank1_water_level(){
-       $tank1 = Tank::where('id', '=', 1)->get()->first();
-       $str =  $tank1->water_level;
-        echo"$str";
+        $data = Tank::create([
+            'name'       => 'tank 1',
+            'water_level'   => rand(30,70),
+        ]);
+
+        $level = Tank::latest()->take(10)->get()->sortBy('id');
+        $water_level = $level->pluck('water_level');
+
+        return response()->json(compact( 'water_level'));
+    }
+
+    public function test(){
+        $data = Tank::create([
+            'name'       => 'tank 1',
+            'water_level'   => rand(30,70),
+        ]);
+
+
+
+        return ($data->water_level);
     }
 }

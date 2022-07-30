@@ -16,20 +16,21 @@
                                             <div class="row">
                                                 <div class="my-2">
                                                     <label for="name">Ad Soyadı</label>
-                                                    <input type="text" name="name" class="form-control" placeholder="Adı Giriniz" required>
+                                                    <input type="text" name="name" id="name" class="form-control" placeholder="Adı Giriniz" required>
+
                                                 </div>
                                                 <div class="col-lg">
                                                     <label for="password">Şifre</label>
-                                                    <input type="password" name="password" class="form-control" placeholder="Şifre Giriniz" required>
+                                                    <input type="password" name="password" id="password" class="form-control" placeholder="Şifre Giriniz" required>
                                                 </div>
                                                 <div class="col-lg">
-                                                    <label for="password">Şifre Tekrar</label>
-                                                    <input type="password" name="password_confirmation" class="form-control" placeholder="Şifreyi Tekrar Giriniz" required>
+                                                    <label for="password_confirmation">Şifre Tekrar</label>
+                                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Şifreyi Tekrar Giriniz" required>
                                                 </div>
                                             </div>
                                             <div class="my-2">
                                                 <label for="user_id">Kullanıcı Kodu</label>
-                                                <input type="text" name="user_id" class="form-control" required>
+                                                <input type="text" name="user_id" id="user_id" class="form-control" required>
                                             </div>
 
                                         </div>
@@ -59,16 +60,16 @@
                                             <div class="row">
                                                 <div class="col-lg">
                                                     <label for="name">Ad Soyadı</label>
-                                                    <input type="text" name="name" id="name" class="form-control" placeholder="Ad Soyadı Giriniz" required>
+                                                    <input type="text" name="name" class="form-control" placeholder="Ad Soyadı Giriniz" required>
                                                 </div>
                                                 <div class="col-lg">
                                                     <label for="name">Password</label>
-                                                    <input type="password" name="password" id="password" class="form-control" placeholder="Yeni Şifre Girebilirsiniz">
+                                                    <input type="password" name="password" class="form-control" placeholder="Yeni Şifre Girebilirsiniz">
                                                 </div>
                                             </div>
                                             <div class="my-2">
                                                 <label for="user_id">Kullanıcı Kodu</label>
-                                                <input type="text" name="user_id" id="user_id" class="form-control" placeholder="User ID" required>
+                                                <input type="text" name="user_id" class="form-control" placeholder="User ID" required>
                                             </div>
 
                                         </div>
@@ -132,12 +133,24 @@
         // add new user ajax request
         $("#add_user_form").submit(function(e) {
             e.preventDefault();
-            const fd = new FormData(this);
+            //const fd = new FormData(this);
+
+            let name =              $("input[name=name]").val();
+            let password =          $("input[password=password]").val();
+            let confirmPassword =   $("input[password_confirmation=password_confirmation]").val();
+            let user_id =           $("input[user_id=user_id]").val();
+
+
             $("#add_user_btn").text('Ekleniyor...');
             $.ajax({
                 url: '{{ route('users.store') }}',
                 method: 'post',
-                data: fd,
+                data: {
+                    name:               name,
+                    password:           password,
+                    confirmPassword:    confirmPassword,
+                    user_id:            user_id
+                },
                 cache: false,
                 contentType: false,
                 processData: false,
@@ -155,6 +168,13 @@
                     $("#add_user_form")[0].reset();
                     $("#addUserModal").modal('hide');
                     $(".modal-backdrop").toggle();
+                },
+                error: function(error) {
+                    console.log(error.responseJSON);
+                    $('#name').text(error.responseJSON.name);
+                    $('#password').text(error.responseJSON.password);
+                    $('#password_confirmation').text(error.responseJSON.password_confirmation);
+                    $('#user_id').text(error.responseJSON.user_id);
                 }
             });
         });

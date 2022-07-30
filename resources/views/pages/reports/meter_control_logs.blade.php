@@ -16,7 +16,7 @@
                     <label class="fs-6 fw-bold mb-2 required">Event Start Date</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" class="form-control form-control-solid" id="beginDate" name="date" placeholder="MM/DD/YYY">
+                    <input type="text" class="form-control form-control-solid" id="beginDate" name="date" placeholder="dd/mm/yyyy">
                     <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
                     </div>
@@ -27,7 +27,7 @@
                     <label class="fs-6 fw-bold mb-2 required">Event End Date</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" class="form-control form-control-solid" id="endDate" name="date" placeholder="MM/DD/YYY">
+                    <input type="text" class="form-control form-control-solid" id="endDate" name="date" placeholder="dd/mm/yyyy">
                     <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
                     </div>
@@ -38,12 +38,16 @@
                 </div>
             </div>
 
-
-
         </div>
         <!--end::Header-->
+
+
+        <canvas id="myChart"></canvas>
+
     </div>
     <!--end::Card-->
+
+
 @endsection
 
 
@@ -55,7 +59,7 @@
             var date_input=$('input[name="date"]'); //our date input has the name "date"
             var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
             var options={
-                format: 'mm/dd/yyyy',
+                format: 'dd/mm/yyyy',
                 container: container,
                 todayHighlight: true,
                 autoclose: true,
@@ -63,4 +67,59 @@
             date_input.datepicker(options);
         })
     </script>
+
+
+
+    <!--begin::chartjs-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script>
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Speed',
+                    data: [],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+        var updateChart = function() {
+            $.ajax({
+                url: "{{ route('metercontrollogs.fetchAll') }}",
+                type: 'GET',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    myChart.data.labels = data.labels;
+                    myChart.data.datasets[0].data = data.data;
+                    myChart.update();
+                    console.log(data);
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
+        }
+
+        updateChart();
+        setInterval(() => {
+            updateChart();
+        }, 5000);
+    </script>
+    <!--end::chartjs-->
+
 @endsection
