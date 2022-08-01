@@ -1,125 +1,124 @@
 @extends('layouts.default')
 
 @section('extra_css')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" />
 @endsection
 
 @section('content')
-    <!--begin::Card-->
-    <div class="card card-custom card-sticky" >
-        <!--begin::Header-->
+    <div class="card card-custom card-sticky">
         <div class="card-header flex-wrap pt-6 pb-6 row ">
-
             <div class="row">
                 <div class="col-md-4">
                     <!--begin::Label-->
-                    <label class="fs-6 fw-bold mb-2 required">Event Start Date</label>
+                    <label class="fs-6 fw-bold mb-2 required">Başlangıç Tarihi</label>
                     <!--end::Label-->
-                    <!--begin::Input-->
-                    <input type="text" class="form-control form-control-solid" id="beginDate" name="date" placeholder="dd/mm/yyyy">
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
+                    <div class="input-group input-daterange">
+                        <input type="text" name="from_date" id="from_date" readonly class="form-control form-control-solid" placeholder="YYYY-MM-DD"/>
                     </div>
-                </div>
 
+
+                </div>
                 <div class="col-md-4">
                     <!--begin::Label-->
-                    <label class="fs-6 fw-bold mb-2 required">Event End Date</label>
+                    <label class="fs-6 fw-bold mb-2 required">Son Tarihi</label>
                     <!--end::Label-->
-                    <!--begin::Input-->
-                    <input type="text" class="form-control form-control-solid" id="endDate" name="date" placeholder="dd/mm/yyyy">
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
+                    <div class="input-group input-daterange">
+                        <input type="text"  name="to_date" id="to_date" readonly class="form-control form-control-solid" placeholder="YYYY-MM-DD" />
                     </div>
                 </div>
-
-                <div class="col-md-4 text-left mt-7">
-                    <button onclick="draw_datatable();" type="button" class="btn btn-light-primary font-weight-bolder btn-block text-uppercase px-5"><i class="far fa-list-alt"></i>  Listele</button>
+                <div class="col-md-4 text-left mt-9">
+                    <button type="button" name="filter" id="filter" class="btn btn-info btn-sm">
+                        Filtrele</button>
+                    <button type="button" name="refresh" id="refresh" class="btn btn-warning btn-sm">Temizle</button>
                 </div>
             </div>
 
+
         </div>
-        <!--end::Header-->
 
-
-        <canvas id="myChart"></canvas>
-
+        <div class="flex-wrap m-5">
+            {!! $dataTable->table() !!}
+        </div>
     </div>
-    <!--end::Card-->
-
-
 @endsection
-
 
 @section('extra_script')
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
 
-    <script>
-        $(document).ready(function(){
-            var date_input=$('input[name="date"]'); //our date input has the name "date"
-            var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-            var options={
-                format: 'dd/mm/yyyy',
-                container: container,
-                todayHighlight: true,
-                autoclose: true,
-            };
-            date_input.datepicker(options);
-        })
-    </script>
+    {!! $dataTable->scripts() !!}
 
 
+{{--    <script>--}}
+{{--        //begin datepicker--}}
+{{--        $(document).ready(function(){--}}
 
-    <!--begin::chartjs-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <script>
-        var ctx = document.getElementById("myChart");
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Speed',
-                    data: [],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    xAxes: [],
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
-                }
-            }
-        });
-        var updateChart = function() {
-            $.ajax({
-                url: "{{ route('metercontrollogs.fetchAll') }}",
-                type: 'GET',
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(data) {
-                    myChart.data.labels = data.labels;
-                    myChart.data.datasets[0].data = data.data;
-                    myChart.update();
-                    console.log(data);
-                },
-                error: function(data){
-                    console.log(data);
-                }
-            });
-        }
+{{--            var date = new Date();--}}
 
-        updateChart();
-        setInterval(() => {
-            updateChart();
-        }, 5000);
-    </script>
-    <!--end::chartjs-->
+{{--            $('.input-daterange').datepicker({--}}
+{{--                todayBtn: 'linked',--}}
+{{--                format: 'yyyy-mm-dd',--}}
+{{--                autoclose: true--}}
+{{--            });--}}
 
+{{--            var _token = $('input[name="_token"]').val();--}}
+
+{{--            fetch_data();--}}
+
+{{--            function fetch_data(from_date = '', to_date = '')--}}
+{{--            {--}}
+{{--                $.ajax({--}}
+{{--                    url:"{{ route('metercontrollogs.fetchAll') }}",--}}
+{{--                    method:"POST",--}}
+{{--                    data:{from_date:from_date, to_date:to_date, _token:_token},--}}
+{{--                    dataType:"json",--}}
+{{--                    success:function(data)--}}
+{{--                    {--}}
+{{--                        var output = '';--}}
+{{--                        $('#total_records').text(data.length);--}}
+{{--                        for(var count = 0; count < data.length; count++)--}}
+{{--                        {--}}
+{{--                            output += '<tr>';--}}
+{{--                            output += '<td>' + data[count].slug + '</td>';--}}
+{{--                            output += '<td>' + data[count].desc + '</td>';--}}
+{{--                            output += '<td>' + data[count].requested_at + '</td>';--}}
+{{--                            output += '<td>' + data[count].action_at + '</td>';--}}
+{{--                            output += '<td>' + data[count].status + '</td>';--}}
+{{--                            output += '<td>' + data[count].created_at + '</td>';--}}
+{{--                            output += '<td>' + data[count].updated_at + '</td></tr>';--}}
+{{--                        }--}}
+{{--                        $('tbody').html(output);--}}
+{{--                    }--}}
+{{--                })--}}
+{{--            }--}}
+
+{{--            $('#filter').click(function(){--}}
+{{--                var from_date = $('#from_date').val();--}}
+{{--                var to_date = $('#to_date').val();--}}
+{{--                if(from_date != '' &&  to_date != '')--}}
+{{--                {--}}
+{{--                    fetch_data(from_date, to_date);--}}
+{{--                }--}}
+{{--                else--}}
+{{--                {--}}
+{{--                    alert('Both Date is required');--}}
+{{--                }--}}
+{{--            });--}}
+
+{{--            $('#refresh').click(function(){--}}
+{{--                $('#from_date').val('');--}}
+{{--                $('#to_date').val('');--}}
+{{--                fetch_data();--}}
+{{--            });--}}
+
+
+{{--        });--}}
+{{--        //end datepicker--}}
+{{--    </script>--}}
 @endsection
+
+
+
+
+
+

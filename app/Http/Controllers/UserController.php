@@ -7,35 +7,23 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
 
     // set index page view
     public function index() {
-        return view('pages.users.testUser');
+        return view('pages.users.index');
     }
 
-    // handle fetch all eamployees ajax request
-    public function fetchAll() {
-        $users = User::all();
-        $output = '';
-        if ($users->count() > 0) {
-            $output .= '<div class="table-responsive"><table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
-            <thead>
-              <tr class="fw-bolder text-muted">
-                <th class="min-w-120px">User ID</th>
-                <th class="min-w-150px">Name</th>
-                <th class="min-w-100px text-end">Action</th>
-              </tr>
-            </thead>
-            <tbody>';
-            foreach ($users as $user) {
-                $output .= '<tr>
-                <td class="text-dark fw-bolder  fs-6">' . $user->user_id . '</td>
-                <td class="text-dark fw-bolder  fs-6">' . $user->name . '</td>
-                <td class="text-end">
-                  <a href="#" id="' . $user->id . '" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 text-hover-primary editIcon" data-bs-toggle="modal" data-bs-target="#editUserModal">
+    // handle fetch all users ajax request
+    public function fetchAll(Request $request, User $user) {
+        $data = $user->getData();
+        return DataTables::of($data)
+            ->addColumn('Actions', function($data) {
+                return '<td class="text-end">
+                  <a href="#" id="' . $data->id . '" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 text-hover-primary editIcon" data-bs-toggle="modal" data-bs-target="#editUserModal">
                         <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
                         <span class="svg-icon svg-icon-3">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -45,8 +33,7 @@ class UserController extends Controller
                         </span>
                         <!--end::Svg Icon-->
                 </a>
-
-                <a href="#" id="' . $user->id . '" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm text-hover-primary deleteIcon">
+                <a href="#" id="' . $data->id . '" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm text-hover-primary deleteIcon">
                     <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
                     <span class="svg-icon svg-icon-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -57,77 +44,74 @@ class UserController extends Controller
                     </span>
                     <!--end::Svg Icon-->
                 </a>
-
-                </td>
-              </tr>';
-            }
-            $output .= '</tbody></table></div>';
-            echo $output;
-        } else {
-            echo '<h1 class="text-center text-secondary my-5">No record present in the database!</h1>';
-        }
+                </td>';
+            })
+            ->rawColumns(['Actions'])
+            ->make(true);
     }
 
     // handle insert a new user ajax request
-    public function store(Request $request) {
+    public function store(Request $request, User $user) {
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+            'password' => 'required|min:6|max:50',
+            'password_confirmation' => 'required|same:password|min:6|max:50'
+        ]);
 
-        $rules = array(
-            "name"      => "required|string|unique:brands|max:255",
-            "password"   => "required|max:255",
-            "password_confirmation"     => "required|same:password|max:255",
-        );
 
-        $this->validate($request, $rules);
-
-        $validator = Validator::make($request->all(), $rules);
-        if($validator->fails()){
-            return back()->withInput()->withErrors($validator);
-        }else{
-            $userData = ['name' => $request->name, 'password' => $request->password, 'user_id' => $request->user_id];
-            User::create($userData);
-            return response()->json([
-                'status' => 200,
-            ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
         }
 
+        $last_user_id = $this->getLastUserId();
+        User::create([
+            'user_id'       => ++$last_user_id,
+            'name'          => $request->name,
+            'password'      => bcrypt($request->password)
+        ]);
 
-
-
-//        $userData = ['name' => $request->name, 'password' => $request->password, 'user_id' => $request->user_id];
-//        User::create($userData);
-//        return response()->json([
-//            'status' => 200,
-//        ]);
+        return response()->json([
+            'success'=>'Article added successfully',
+            'status' => 200
+        ]);
     }
 
     // handle edit an user ajax request
     public function edit(Request $request) {
         $id = $request->id;
         $user = User::find($id);
+
         return response()->json($user);
     }
 
     // handle update an user ajax request
     public function update(Request $request) {
-        $id = $request->user_id;
-        $user = User::where('user_id', '=', $id)->get()->first();
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
+        }
+
+        $user = User::where('id', '=', $request->id)->get()->first();
 
         if($request->password == ''){
             $password = $user->password;
         }else{
+            $validator = \Validator::make($request->all(), [
+                'password' => 'min:6|max:50',
+            ]);
             $password = $request->password;
         }
-
 
         $user->update([
             'name'      =>  $request->name,
             'password'  =>  bcrypt($password),
-            'user_id'   =>  $request->user_id
         ]);
 
-        return response()->json([
-            'status' => 200,
-        ]);
+        return response()->json(['success'=>'Article updated successfully']);
+
     }
 
     // handle delete an user ajax request
@@ -136,4 +120,9 @@ class UserController extends Controller
         $user = User::where('id', '=', $request->id)->delete();
     }
 
+    public function getLastUserId(){
+        $user_id = User::all()->last()->user_id;
+
+        return $user_id;
+    }
 }

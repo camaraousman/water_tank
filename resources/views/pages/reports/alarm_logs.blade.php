@@ -5,59 +5,58 @@
 @endsection
 
 @section('content')
-
-
-        <div class="card card-custom card-sticky">
-            <div class="card-header flex-wrap pt-6 pb-6 row ">
-                <div class="row">
-                    <div class="col-md-4">
-                        <!--begin::Label-->
-                        <label class="fs-6 fw-bold mb-2 required">Başlangıç Tarihi</label>
-                        <!--end::Label-->
-                        <div class="input-group input-daterange">
-                            <input type="text" name="from_date" id="from_date" readonly class="form-control form-control-solid" placeholder="YYYY-MM-DD"/>
-                        </div>
-
-
+    <div class="card card-custom card-sticky">
+        <div class="card-header flex-wrap pt-6 pb-6 row ">
+            <div class="row">
+                <div class="col-md-4">
+                    <!--begin::Label-->
+                    <label class="fs-6 fw-bold mb-2 required">Başlangıç Tarihi</label>
+                    <!--end::Label-->
+                    <div class="input-group input-daterange">
+                        <input type="text" name="from_date" id="from_date" readonly class="form-control form-control-solid" placeholder="YYYY-MM-DD"/>
                     </div>
-                    <div class="col-md-4">
-                        <!--begin::Label-->
-                        <label class="fs-6 fw-bold mb-2 required">Son Tarihi</label>
-                        <!--end::Label-->
-                        <div class="input-group input-daterange">
-                            <input type="text"  name="to_date" id="to_date" readonly class="form-control form-control-solid" placeholder="YYYY-MM-DD" />
-                        </div>
-                    </div>
-                    <div class="col-md-4 text-left mt-9">
-                        <button type="button" name="filter" id="filter" class="btn btn-info btn-sm">Filtrele</button>
-                        <button type="button" name="refresh" id="refresh" class="btn btn-warning btn-sm">Temizle</button>
+
+
+                </div>
+                <div class="col-md-4">
+                    <!--begin::Label-->
+                    <label class="fs-6 fw-bold mb-2 required">Son Tarihi</label>
+                    <!--end::Label-->
+                    <div class="input-group input-daterange">
+                        <input type="text"  name="to_date" id="to_date" readonly class="form-control form-control-solid" placeholder="YYYY-MM-DD" />
                     </div>
                 </div>
-            </div>
-
-            <div class="flex-wrap m-5">
-                <div class="table-responsive">
-                    <table class="table table-row-bordered gy-5 m-5">
-                        <thead>
-                        <tr>
-                            <th>Slug</th>
-                            <th>Desc</th>
-                            <th>Requested at</th>
-                            <th>Action at</th>
-                            <th>Status</th>
-                            <th>Created at</th>
-                            <th>Updated at</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    {{ csrf_field() }}
+                <div class="col-md-4 text-left mt-9">
+                    <button type="button" name="filter" id="filter" class="btn btn-info btn-sm">
+                        Filtrele</button>
+                    <button type="button" name="refresh" id="refresh" class="btn btn-warning btn-sm">Temizle</button>
                 </div>
             </div>
 
 
         </div>
+
+        <div class="flex-wrap m-5">
+            <div class="table-responsive">
+                <table id="kt_datatable_example_1" class="table table-row-bordered gy-5 m-5">
+                    <thead>
+                    <tr>
+                        <th>Slug</th>
+                        <th>Desc</th>
+                        <th>Requested at</th>
+                        <th>Action at</th>
+                        <th>Status</th>
+                        <th>Created at</th>
+                        <th>Updated at</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                {{ csrf_field() }}
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('extra_script')
@@ -65,6 +64,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
 
     <script>
+        //begin datepicker
         $(document).ready(function(){
 
             var date = new Date();
@@ -82,7 +82,7 @@
             function fetch_data(from_date = '', to_date = '')
             {
                 $.ajax({
-                    url:"{{ route('fetch_data') }}",
+                    url:"{{ route('alarmlogs.fetchAll') }}",
                     method:"POST",
                     data:{from_date:from_date, to_date:to_date, _token:_token},
                     dataType:"json",
@@ -127,6 +127,7 @@
 
 
         });
+        //end datepicker
     </script>
 @endsection
 

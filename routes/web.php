@@ -39,8 +39,8 @@ Route::get('/', function () {
 Route::prefix('users')->as('users.')->group(
     function() {
         Route::get('/', [UserController::class, 'index'])->name('index')->middleware(['auth']);
-        Route::post('/store', [UserController::class, 'store'])->name('store')->middleware(['auth']);
         Route::get('/fetchall', [UserController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
+        Route::post('/store', [UserController::class, 'store'])->name('store')->middleware(['auth']);
         Route::delete('/delete', [UserController::class, 'delete'])->name('delete')->middleware(['auth']);
         Route::get('/edit', [UserController::class, 'edit'])->name('edit')->middleware(['auth']);
         Route::post('/update', [UserController::class, 'update'])->name('update')->middleware(['auth']);
@@ -90,8 +90,7 @@ Route::prefix('logs')->group(
         Route::prefix('metercontrollogs')->as('metercontrollogs.')->group(
             function() {
                 Route::get('/', [MeterControlLogController::class, 'index'])->name('index')->middleware(['auth']);
-                Route::post('/store', [MeterControlLogController::class, 'store'])->name('store')->middleware(['auth']);
-                Route::get('/fetchall', [MeterControlLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
+                Route::post('/fetchall', [MeterControlLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
             }
         );
     }

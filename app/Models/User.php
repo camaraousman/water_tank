@@ -41,4 +41,34 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    use HasFactory;
+
+    protected $table = 'users';
+    protected $guarded = array();
+
+    public function getData()
+    {
+        return static::orderBy('created_at','desc')->get();
+    }
+
+    public function storeData($input)
+    {
+
+    }
+
+    public function findData($id)
+    {
+        return static::find($id);
+    }
+
+    public function updateData($id, $input)
+    {
+        return static::find($id)->update($input);
+    }
+
+    public function deleteData($id)
+    {
+        return static::find($id)->delete();
+    }
 }
