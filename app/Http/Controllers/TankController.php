@@ -3,20 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tank;
+use App\Models\TankLevelLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TankController extends Controller
 {
     public function tank1_water_level(){
-        $data = Tank::create([
-            'name'       => 'tank 1',
-            'water_level'   => rand(30,70),
+        $data = TankLevelLog::create([
+            'tank_id'       => 1,
+            'water_level'   => rand(0,800),
         ]);
 
-        $level = Tank::latest()->take(10)->get()->sortBy('id');
-        $water_level = $level->pluck('water_level');
+        $level = DB::table('tank_level_logs')->latest()->first();
+        $water_level = $level->water_level;
 
-        return response()->json(compact( 'water_level'));
+        $str="&value=".$water_level;
+        return $str;
+    }
+
+    public function tank2_water_level(){
+        $data = TankLevelLog::create([
+            'tank_id'       => 2,
+            'water_level'   => rand(0,800),
+        ]);
+
+        $level = DB::table('tank_level_logs')->latest()->first();
+        $water_level = $level->water_level;
+
+        $str="&value=".$water_level;
+        return $str;
     }
 
     public function test(){
@@ -24,8 +40,6 @@ class TankController extends Controller
             'name'       => 'tank 1',
             'water_level'   => rand(30,70),
         ]);
-
-
 
         return ($data->water_level);
     }

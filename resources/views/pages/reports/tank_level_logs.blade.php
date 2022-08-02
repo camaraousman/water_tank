@@ -9,37 +9,49 @@
     <div class="card card-custom card-sticky" >
         <!--begin::Header-->
         <div class="card-header flex-wrap pt-6 pb-6 row ">
-
+            <div class="card-header flex-wrap pt-6 pb-6 row ">
                 <div class="row">
                     <div class="col-md-4">
                         <!--begin::Label-->
-                        <label class="fs-6 fw-bold mb-2 required">Event Start Date</label>
+                        <label class="fs-6 fw-bold mb-2 required">Başlangıç Tarihi</label>
                         <!--end::Label-->
-                        <!--begin::Input-->
-                        <input type="text" class="form-control form-control-solid" id="beginDate" name="date" placeholder="MM/DD/YYY">
-                        <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-th"></span>
+                        <div class="input-group input-daterange">
+                            <input type="text" name="from_date" id="from_date" readonly class="form-control form-control-solid" placeholder="YYYY-MM-DD"/>
                         </div>
-                    </div>
 
+
+                    </div>
                     <div class="col-md-4">
                         <!--begin::Label-->
-                        <label class="fs-6 fw-bold mb-2 required">Event End Date</label>
+                        <label class="fs-6 fw-bold mb-2 required">Son Tarihi</label>
                         <!--end::Label-->
-                        <!--begin::Input-->
-                        <input type="text" class="form-control form-control-solid" id="endDate" name="date" placeholder="MM/DD/YYY">
-                        <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-th"></span>
+                        <div class="input-group input-daterange">
+                            <input type="text"  name="to_date" id="to_date" readonly class="form-control form-control-solid" placeholder="YYYY-MM-DD" />
                         </div>
                     </div>
-
-                    <div class="col-md-4 text-left mt-7">
-                        <button onclick="draw_datatable();" type="button" class="btn btn-light-primary font-weight-bolder btn-block text-uppercase px-5"><i class="far fa-list-alt"></i>  Listele</button>
+                    <div class="col-md-4 text-left mt-9">
+                        <button type="button" name="filter" id="filter" class="btn btn-info btn-sm">
+                            Filtrele</button>
+                        <button type="button" name="refresh" id="refresh" class="btn btn-warning btn-sm">Temizle</button>
                     </div>
                 </div>
+            </div>
 
-
-
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered datatable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>tank_id </th>
+                            <th>water_level</th>
+                            <th>Created at</th>
+                            <th>Updated at</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
         </div>
         <!--end::Header-->
 
@@ -59,25 +71,12 @@
 
 
 @section('extra_script')
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!--begin::datepicker-->
-    <script>
-        $(document).ready(function(){
-            var date_input=$('input[name="date"]'); //our date input has the name "date"
-            var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-            var options={
-                format: 'mm/dd/yyyy',
-                container: container,
-                todayHighlight: true,
-                autoclose: true,
-            };
-            date_input.datepicker(options);
-        })
-    </script>
-    <!--end::datepicker-->
-
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js'></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!--begin::chart-->
     <script>
@@ -114,6 +113,95 @@
         );
     </script>
     <!--end::chart-->
+
+    <!--begin::Datatable-->
+    <script>
+        //begin datepicker
+        $(document).ready(function(){
+
+            fetch_data();
+
+            var date = new Date();
+
+            $('.input-daterange').datepicker({
+                todayBtn: 'linked',
+                format: 'yyyy-mm-dd',
+                autoclose: true
+            });
+
+            $('#filter').click(function(){
+                var from_date = $('#from_date').val();
+                var to_date = $('#to_date').val();
+                if(from_date != '' &&  to_date != '')
+                {
+                    $('.datatable').DataTable().clear().destroy();
+                    fetch_data(from_date, to_date);
+                }
+                else
+                {
+                    alert('Both Date is required');
+                }
+            });
+
+
+            function fetch_data(from_date, to_date){
+                // init datatable
+                var dataTable = $('.datatable').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    autoWidth: false,
+                    pageLength: 5,
+                    language: {
+                        "lengthMenu": "_MENU_ Sayfa boyutunu seçin",
+                        "emptyTable":     "Tabloda veri yok",
+                        "zeroRecords": "kayıt bulunamadı",
+                        "info": "Toplam _PAGES_ sayfanın _PAGE_. sayfası gösteriyor",
+                        "infoEmpty": "kayıt bulunamadı",
+                        "infoFiltered": "(toplam _MAX_ kayıttan filtrelendi)",
+                        "loadingRecords": "Yükleniyor...",
+                        "processing": "Lütfen bekleyin...",
+                        "search":         "Ara:",
+                        "paginate": {
+                            "first":      "İlk",
+                            "last":       "Son",
+                            "next":       "Sonraki",
+                            "previous":   "Önceki"
+                        },
+                    },
+
+                    // scrollX: true,
+                    "order": [[ 0, "desc" ]],
+                    ajax: {
+                        url: '{{ route('tanklevellogs.fetchAll') }}',
+                        type: "POST",
+                        data: {
+                            from_date:from_date,
+                            to_date:to_date,
+                        },
+                        dataType:"json",
+
+                    },
+                    columns: [
+                        {data: 'id', name: 'id'},
+                        {data: 'tank_id', name: 'tank_id'},
+                        {data: 'water_level', name: 'water_level'},
+                        {data: 'created_at', name: 'created_at'},
+                        {data: 'updated_at', name: 'updated_at'},
+                    ]
+                });
+            }
+
+            //remove filter and clear page
+            $('#refresh').click(function(){
+                $('#from_date').val('');
+                $('#to_date').val('');
+                $('.datatable').DataTable().clear().destroy();
+                fetch_data();
+            });
+        });
+        //end datepicker
+    </script>
+    <!--end::Datatable-->
 
 
 @endsection

@@ -48,6 +48,7 @@
                         </div>
                         <!--end::Body-->
                     </div>
+
                     <!--end::Chart widget 27-->
                 </div>
                 <!--end::Col-->
@@ -147,7 +148,7 @@
     <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
     <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
 
-
+    <!--begin Tank 1 Chart-->
     <script>
         FusionCharts.ready(function(){
             var chartObj = new FusionCharts({
@@ -155,22 +156,22 @@
                     dataFormat: 'json',
                     renderAt: 'chart-container',
                     width: '300',
-                    height: '370',
+                    height: '400',
                     dataSource: {
                         "chart": {
                             "theme": "fusion",
                             "caption": "",
                             "subcaption": "",
                             "lowerLimit": "0",
-                            "upperLimit": "100",
+                            "upperLimit": "800",
                             "lowerLimitDisplay": "Empty",
                             "upperLimitDisplay": "Full",
                             "numberSuffix": " ltrs",
                             "showValue": "1",
                             "chartBottomMargin": "45",
                             "showValue": "0",
-                            "dataStreamUrl": "",
-                            "refreshInterval": "1",
+                            "dataStreamUrl": "{{route('tank1_water_level')}}",
+                            "refreshInterval": "5",
                             "refreshInstantly": "1",
                             "cylFillColor": "#35d1fd",
                             "cyloriginx": "125",
@@ -211,7 +212,7 @@
 
                             evtObj.sender.chartInterval = setInterval(function() {
                                 evtObj.sender.feedData && evtObj.sender.feedData("&value=");
-                            }, 2000);
+                            }, 5000);
                         },
                         /* Using real time update event to update the annotation */
 
@@ -219,7 +220,7 @@
                         "realTimeUpdateComplete": function(evt, arg) {
                             var annotations = evt.sender.annotations,
                                 dataVal = evt.sender.getData(),
-                                colorVal = (dataVal >= 70) ? "#6caa03" : ((dataVal <= 35) ? "#e44b02" : "#f8bd1b");
+                                colorVal = (dataVal >= 600) ? "#6caa03" : ((dataVal <= 300) ? "#e44b02" : "#f8bd1b");
                             //Updating the volume value
                             annotations && annotations.update('rangeText', {
                                 "text": dataVal + " ltrs"
@@ -239,5 +240,100 @@
             chartObj.render();
         });
     </script>
+    <!--end Tank 1 Chart-->
+
+    <!--begin Tank 2 Chart-->
+    <script>
+        FusionCharts.ready(function(){
+            var chartObj = new FusionCharts({
+                    type: 'cylinder',
+                    dataFormat: 'json',
+                    renderAt: 'chart-container-2',
+                    width: '300',
+                    height: '400',
+                    dataSource: {
+                        "chart": {
+                            "theme": "fusion",
+                            "caption": "",
+                            "subcaption": "",
+                            "lowerLimit": "0",
+                            "upperLimit": "800",
+                            "lowerLimitDisplay": "Empty",
+                            "upperLimitDisplay": "Full",
+                            "numberSuffix": " ltrs",
+                            "showValue": "1",
+                            "chartBottomMargin": "45",
+                            "showValue": "0",
+                            "dataStreamUrl": "{{route('tank2_water_level')}}",
+                            "refreshInterval": "5",
+                            "refreshInstantly": "1",
+                            "cylFillColor": "#35d1fd",
+                            "cyloriginx": "125",
+                            "cyloriginy": "270",
+                            "cylradius": "120",
+                            "cylheight": "250"
+                        },
+                        "value": "200",
+                        "annotations": {
+                            "origw": "400",
+                            "origh": "290",
+                            "autoscale": "1",
+                            "groups": [{
+                                "id": "range",
+                                "items": [{
+                                    "id": "rangeBg",
+                                    "type": "rectangle",
+                                    "x": "$canvasCenterX-75",
+                                    "y": "$chartEndY-40",
+                                    "tox": "$canvasCenterX +55",
+                                    "toy": "$chartEndY-80",
+                                    "fillcolor": "#35d1fd"
+                                }, {
+                                    "id": "rangeText",
+                                    "type": "Text",
+                                    "fontSize": "20",
+                                    "fillcolor": "#333333",
+                                    "text": "Loading...",
+                                    "x": "$chartCenterX-60",
+                                    "y": "$chartEndY-60"
+                                }]
+                            }]
+                        }
+
+                    },
+                    "events": {
+                        "rendered": function(evtObj, argObj) {
+
+                            evtObj.sender.chartInterval = setInterval(function() {
+                                evtObj.sender.feedData && evtObj.sender.feedData("&value=");
+                            }, 5000);
+                        },
+                        /* Using real time update event to update the annotation */
+
+                        //showing available volume in tank (setting colors as per available volume)
+                        "realTimeUpdateComplete": function(evt, arg) {
+                            var annotations = evt.sender.annotations,
+                                dataVal = evt.sender.getData(),
+                                colorVal = (dataVal >= 600) ? "#6caa03" : ((dataVal <= 300) ? "#e44b02" : "#f8bd1b");
+                            //Updating the volume value
+                            annotations && annotations.update('rangeText', {
+                                "text": dataVal + " ltrs"
+                            });
+                            //setting background color of annotation as per value
+                            annotations && annotations.update('rangeBg', {
+                                "fillcolor": colorVal
+                            });
+
+                        },
+                        "disposed": function(evt, arg) {
+                            clearInterval(evt.sender.chartInterval);
+                        }
+                    }
+                }
+            );
+            chartObj.render();
+        });
+    </script>
+    <!--end Tank 1 Chart-->
 
 @endsection

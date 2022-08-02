@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\AlarmLog;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class ALarmLogController extends Controller
 {
@@ -21,7 +23,31 @@ class ALarmLogController extends Controller
             } else {
                 $data = DB::table('alarm_logs')->orderBy('created_at', 'desc')->get();
             }
-            echo json_encode($data);
+            return DataTables::of($data)->make(true);
         }
+    }
+
+    public function store(Request $request){
+        $message='';
+        $status=-1;
+
+        try {
+            AlarmLog::create([
+                'slug'          => $request->SLUG,
+                'desc'          => $request->DESC,
+                'requested_at'  => Carbon::now()->format('Y-m-d H:i:s'),
+                'action_at'  => Carbon::now()->format('Y-m-d H:i:s'),
+            ]);
+
+            $message = "success";
+            $status = 1;
+        }catch (\Illuminate\Database\QueryException $ex){
+            $message = $ex;
+        }
+
+        return response()->json([
+           "MESSAGE"        => $message,
+           "STATUS"         => $status
+        ]);
     }
 }

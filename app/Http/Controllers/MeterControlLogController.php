@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\MeterControlLogsDatatables;
 use App\Models\MeterControlLog;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -25,5 +26,29 @@ class MeterControlLogController extends Controller
             }
             return DataTables::of($data)->make(true);
         }
+    }
+
+    public function store(Request $request){
+        $message='';
+        $status=-1;
+
+        try {
+            MeterControlLog::create([
+                'slug'          => $request->SLUG,
+                'desc'          => $request->DESC,
+                'requested_at'  => Carbon::now()->format('Y-m-d H:i:s'),
+                'action_at'  => Carbon::now()->format('Y-m-d H:i:s'),
+            ]);
+
+            $message = "success";
+            $status = 1;
+        }catch (\Illuminate\Database\QueryException $ex){
+            $message = $ex;
+        }
+
+        return response()->json([
+            "MESSAGE"        => $message,
+            "STATUS"         => $status
+        ]);
     }
 }
