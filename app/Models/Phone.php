@@ -11,4 +11,9 @@ class Phone extends Model
     protected $fillable = [
         'phone_number',
     ];
+
+    public function getData()
+    {
+        return static::orderBy('created_at','desc')->get();
+    }
 }

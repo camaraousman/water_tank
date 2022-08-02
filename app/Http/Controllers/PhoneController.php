@@ -4,32 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Phone;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class PhoneController extends Controller
 {
     // set index page view
     public function index() {
-        return view('pages.phones.manage');
+        return view('pages.phones.index');
     }
 
-    // handle fetch all eamployees ajax request
-    public function fetchAll() {
-        $phones = Phone::all();
-        $output = '';
-        if ($phones->count() > 0) {
-            $output .= '<div class="table-responsive"><table class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3">
-            <thead>
-              <tr class="fw-bolder text-muted">
-                <th class="min-w-120px">Phone Number</th>
-                <th class="min-w-100px text-end">Action</th>
-              </tr>
-            </thead>
-            <tbody>';
-            foreach ($phones as $phone) {
-                $output .= '<tr>
-                <td class="text-dark fw-bolder  fs-6">' . $phone->phone_number . '</td>
-                <td class="text-end">
-                <a href="#" id="' . $phone->id . '" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm text-hover-primary deleteIcon">
+    // handle fetch all phone ajax request
+    public function fetchAll(Request $request, Phone $phone) {
+        $data = $phone->getData();
+        return DataTables::of($data)
+            ->addColumn('Actions', function($data) {
+                return '<td class="text-end">
+                <a href="#" id="' . $data->id . '" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm text-hover-primary deleteIcon">
                     <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
                     <span class="svg-icon svg-icon-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -40,22 +30,23 @@ class PhoneController extends Controller
                     </span>
                     <!--end::Svg Icon-->
                 </a>
-
-                </td>
-              </tr>';
-            }
-            $output .= '</tbody></table></div>';
-            echo $output;
-        } else {
-            echo '<h1 class="text-center text-secondary my-5">No record present in the database!</h1>';
-        }
+                </td>';
+            })
+            ->rawColumns(['Actions'])
+            ->make(true);
     }
 
     // handle insert a new phone ajax request
     public function store(Request $request) {
+        $validator = \Validator::make($request->all(), [
+            'phone_number' => 'required|regex:/^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/u',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
+        }
 
         Phone::create([
-            'phone_number'      => $request->phone_number
+            'phone_number'      => str_replace([' ','-'], '', $request->phone_number)
         ]);
         return response()->json([
             'status' => 200,

@@ -6,6 +6,7 @@ use App\DataTables\MeterControlLogsDatatables;
 use App\Models\MeterControlLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class MeterControlLogController extends Controller
 {
@@ -22,7 +23,7 @@ class MeterControlLogController extends Controller
             } else {
                 $data = DB::table('meter_control_logs')->orderBy('action_at', 'desc')->get();
             }
-            echo json_encode($data);
+            return DataTables::of($data)->make(true);
         }
     }
 }
