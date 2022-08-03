@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('extra_css')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" />
 @endsection
 
 @section('content')
@@ -139,7 +139,7 @@
                 }
                 else
                 {
-                    alert('Both Date is required');
+                    alert('2 tarih aralığı şeçin');
                 }
             });
 

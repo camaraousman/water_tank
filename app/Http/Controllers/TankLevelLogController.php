@@ -40,7 +40,7 @@ class TankLevelLogController extends Controller
             $message = "success";
             $status = 1;
         }catch (\Illuminate\Database\QueryException $ex){
-            $message = $ex;
+            $message = $ex->getMessage();
         }
 
         return response()->json([

@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\ALarmLogController;
+use App\Http\Controllers\MeterController;
 use App\Http\Controllers\MeterControlLogController;
 use App\Http\Controllers\PhoneController;
+use App\Http\Controllers\Services;
 use App\Http\Controllers\TankController;
 use App\Http\Controllers\TankLevelLogController;
 use App\Http\Controllers\TestController;
@@ -36,6 +38,7 @@ Route::get('/', function () {
 Route::get('/tank1_water_level',[TankController::class, 'tank1_water_level'])->name('tank1_water_level')->middleware('auth');
 Route::get('/tank2_water_level',[TankController::class, 'tank2_water_level'])->name('tank2_water_level')->middleware('auth');
 
+Route::post('/open_close_meter/{id}', [MeterController::class, 'open_close_meter'])->name('open_close_meter')->middleware('auth');
 
 /*
 |--------------------------------------------------------------------------
@@ -108,6 +111,21 @@ Route::prefix('logs')->group(
         );
     }
 );
+
+
+/*
+|--------------------------------------------------------------------------
+| Services
+|--------------------------------------------------------------------------
+|
+|
+*/
+
+Route::prefix('services')->as('services.')->group(function (){
+    Route::post('/switch', [Services::class, 'switch'])->name('switch');
+});
+
+
 
 
 Route::get('/test',[TestController::class, 'test'])->name('test')->middleware('auth');

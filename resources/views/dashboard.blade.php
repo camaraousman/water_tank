@@ -44,7 +44,6 @@
                             </div>
 
 
-
                         </div>
                         <!--end::Body-->
                     </div>
@@ -98,43 +97,69 @@
                 <!--begin::start_stop switch-->
                 <!--begin::Col-->
 
-                <div class="col-xxl-4 mb-5 mb-xl-10 mt-10">
-                    <div class="row">
-                        <!--begin::Mixed Widget 14-->
-                        <div class="card card-xxl-stretch mb-5 mb-xl-8" style="background-color: #408ca8; color: #fff">
-                            <!--begin::Body-->
-                            <div class="card-body d-flex flex-column">
-                                <!--begin::Wrapper-->
-                                <div class="d-flex flex-column mb-0">
-                                    <div class="pt-5">
-                                        <p class="text-center fs-6 pb-5">
-                                            <span class="badge badge-light-danger fs-8">Not:</span>&#160; Buradan metreyi başlatabilirsiniz
-                                            <a href="#" class="btn btn-light-primary w-100 py-3 mt-4">Başlat</a>
+
+                <div class="col-xxl-4 mb-5 mb-xl-10 "
+                     style="height: 100vh; overflow: hidden;overflow-y: auto !important; max-height: 100vh">
+                    @for($i=1; $i<=\App\Models\Meter::getLength(); $i++)
+                        <div class="row">
+                            <!--begin::Mixed Widget 14-->
+                            <div class="card card-xxl-stretch mb-5 mb-xl-8"
+                                 style="background-color: #408ca8; color: #fff">
+                                <!--begin::Body-->
+                                <div class="card-body d-flex flex-column">
+                                    <!--begin::Wrapper-->
+                                    <div class="d-flex flex-column mb-0">
+                                        <div class="pt-5">
+                                            <form action="{{route('open_close_meter', $i)}}" method="post">
+                                                @csrf
+                                                <p class="text-center fs-6 pb-5">{{\App\Models\Meter::getName($i)}}</p>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <button class="btn btn-light-primary w-100 py-3 mt-4"
+                                                                @if(\App\Models\Meter::isOn($i)) disabled @endif>Başlat
+                                                        </button>
+                                                    </div>
+                                                    <div class="col">
+                                                        <button class="btn btn-light-danger w-100 py-3 mt-4"
+                                                                @if(!(\App\Models\Meter::isOn($i))) disabled @endif >
+                                                            Kapat
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+
+                                            </form>
+                                        </div>
                                     </div>
+                                    <!--end::Wrapper-->
                                 </div>
-                                <!--end::Wrapper-->
                             </div>
+                            <!--end::Mixed Widget 14-->
                         </div>
-                        <!--end::Mixed Widget 14-->
-                    </div>
-                    <div class="row">
-                        <!--begin::Mixed Widget 14-->
-                        <div class="card card-xxl-stretch mb-5 mb-xl-8" style="background-color: #db8888; color: #fff">
-                            <!--begin::Body-->
-                            <div class="card-body d-flex flex-column">
-                                <!--begin::Wrapper-->
-                                <div class="d-flex flex-column mb-0">
-                                    <div class="pt-5">
-                                        <p class="text-center fs-6 pb-5">
-                                            <span class="badge badge-light-danger fs-8">Not:</span>&#160; Buradan metreyi durdurabilirsiniz
-                                            <a href="#" class="btn btn-light-danger w-100 py-3 mt-4">Durdur</a>
-                                    </div>
-                                </div>
-                                <!--end::Wrapper-->
-                            </div>
-                        </div>
-                        <!--end::Mixed Widget 14-->
-                    </div>
+                    @endfor
+
+                    {{--                    <div class="row">--}}
+                    {{--                        <!--begin::Mixed Widget 14-->--}}
+                    {{--                        <div class="card card-xxl-stretch mb-5 mb-xl-8" style="background-color: #db8888; color: #fff">--}}
+                    {{--                            <!--begin::Body-->--}}
+                    {{--                            <div class="card-body d-flex flex-column">--}}
+                    {{--                                <!--begin::Wrapper-->--}}
+                    {{--                                <div class="d-flex flex-column mb-0">--}}
+                    {{--                                    <div class="pt-5">--}}
+
+                    {{--                                        <form action="{{route('close_meter')}}" method="post">--}}
+                    {{--                                            @csrf--}}
+                    {{--                                            <span class="badge badge-light-danger fs-8">Not:</span>&#160; Buradan metreyi Kapatabilirsiniz--}}
+                    {{--                                            <button class="btn btn-light-primary w-100 py-3 mt-4">Kapat</button>--}}
+                    {{--                                        </form>--}}
+                    {{--                                    </div>--}}
+                    {{--                                </div>--}}
+                    {{--                                <!--end::Wrapper-->--}}
+                    {{--                            </div>--}}
+                    {{--                        </div>--}}
+                    {{--                        <!--end::Mixed Widget 14-->--}}
+                    {{--                    </div>--}}
                 </div>
 
             </div>
@@ -146,11 +171,12 @@
 
 @section('extra_script')
     <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
-    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
 
     <!--begin Tank 1 Chart-->
     <script>
-        FusionCharts.ready(function(){
+        FusionCharts.ready(function () {
             var chartObj = new FusionCharts({
                     type: 'cylinder',
                     dataFormat: 'json',
@@ -208,16 +234,16 @@
 
                     },
                     "events": {
-                        "rendered": function(evtObj, argObj) {
+                        "rendered": function (evtObj, argObj) {
 
-                            evtObj.sender.chartInterval = setInterval(function() {
+                            evtObj.sender.chartInterval = setInterval(function () {
                                 evtObj.sender.feedData && evtObj.sender.feedData("&value=");
                             }, 5000);
                         },
                         /* Using real time update event to update the annotation */
 
                         //showing available volume in tank (setting colors as per available volume)
-                        "realTimeUpdateComplete": function(evt, arg) {
+                        "realTimeUpdateComplete": function (evt, arg) {
                             var annotations = evt.sender.annotations,
                                 dataVal = evt.sender.getData(),
                                 colorVal = (dataVal >= 600) ? "#6caa03" : ((dataVal <= 300) ? "#e44b02" : "#f8bd1b");
@@ -231,7 +257,7 @@
                             });
 
                         },
-                        "disposed": function(evt, arg) {
+                        "disposed": function (evt, arg) {
                             clearInterval(evt.sender.chartInterval);
                         }
                     }
@@ -244,7 +270,7 @@
 
     <!--begin Tank 2 Chart-->
     <script>
-        FusionCharts.ready(function(){
+        FusionCharts.ready(function () {
             var chartObj = new FusionCharts({
                     type: 'cylinder',
                     dataFormat: 'json',
@@ -302,16 +328,16 @@
 
                     },
                     "events": {
-                        "rendered": function(evtObj, argObj) {
+                        "rendered": function (evtObj, argObj) {
 
-                            evtObj.sender.chartInterval = setInterval(function() {
+                            evtObj.sender.chartInterval = setInterval(function () {
                                 evtObj.sender.feedData && evtObj.sender.feedData("&value=");
                             }, 5000);
                         },
                         /* Using real time update event to update the annotation */
 
                         //showing available volume in tank (setting colors as per available volume)
-                        "realTimeUpdateComplete": function(evt, arg) {
+                        "realTimeUpdateComplete": function (evt, arg) {
                             var annotations = evt.sender.annotations,
                                 dataVal = evt.sender.getData(),
                                 colorVal = (dataVal >= 600) ? "#6caa03" : ((dataVal <= 300) ? "#e44b02" : "#f8bd1b");
@@ -325,7 +351,7 @@
                             });
 
                         },
-                        "disposed": function(evt, arg) {
+                        "disposed": function (evt, arg) {
                             clearInterval(evt.sender.chartInterval);
                         }
                     }
