@@ -38,9 +38,13 @@ class PhoneController extends Controller
 
     // handle insert a new phone ajax request
     public function store(Request $request) {
+        $messages = [
+            'required' => 'The :attribute field is a must.',
+        ];
+
         $validator = \Validator::make($request->all(), [
             'phone_number' => 'required|regex:/^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/u',
-        ]);
+        ], $messages);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }

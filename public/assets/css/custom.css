@@ -1,5 +1,14 @@
 .user-profile{
     position: absolute;
-    margin: 1% 93% !important;
+    margin: 1% 85% !important;
+
 }
+
+.user-profile-name{
+    position: relative;
+    margin-right: 15px;
+    margin-top: auto;
+}
+
+
 

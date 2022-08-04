@@ -127,7 +127,7 @@
                 ]
             });
 
-            // Create user Ajax request.
+            // Create phone Ajax request.
             $('#add_phone_btn').click(function(e) {
                 e.preventDefault();
 

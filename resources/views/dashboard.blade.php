@@ -12,9 +12,9 @@
             <div class="row gx-5 gx-xl-10">
                 <!--begin::tank 1-->
                 <!--begin::Col-->
-                <div class="col-xxl-4 mb-5 mb-xl-10">
+                <div class="col-xxl-4 mb-5 mb-xl-10" >
                     <!--begin::Chart widget 27-->
-                    <div class="card card-flush h-xl-100">
+                    <div class="card card-flush h-xl-100" style="height: 100vh; overflow: hidden;overflow-y: auto !important; max-height: 500px">
                         <!--begin::Header-->
                         <div class="card-header py-7">
                             <!--begin::Statistics-->
@@ -28,7 +28,7 @@
                                 </div>
                                 <!--end::Heading-->
                                 <!--begin::Description-->
-                                <span class="fs-6 fw-bold text-gray-400">some info</span>
+{{--                                <span class="fs-6 fw-bold text-gray-400">some info</span>--}}
                                 <!--end::Description-->
                             </div>
                             <!--end::Statistics-->
@@ -55,9 +55,9 @@
 
                 <!--begin::tank 2-->
                 <!--begin::Col-->
-                <div class="col-xxl-4 mb-5 mb-xl-10">
+                <div class="col-xxl-4 mb-5 mb-xl-10" >
                     <!--begin::Chart widget 27-->
-                    <div class="card card-flush h-xl-100">
+                    <div class="card card-flush h-xl-100" style="height: 100vh; overflow: hidden;overflow-y: auto !important; max-height: 500px">
                         <!--begin::Header-->
                         <div class="card-header py-7">
                             <!--begin::Statistics-->
@@ -70,9 +70,6 @@
 
                                 </div>
                                 <!--end::Heading-->
-                                <!--begin::Description-->
-                                <span class="fs-6 fw-bold text-gray-400">some info</span>
-                                <!--end::Description-->
                             </div>
                             <!--end::Statistics-->
                         </div>
@@ -99,7 +96,7 @@
 
 
                 <div class="col-xxl-4 mb-5 mb-xl-10 "
-                     style="height: 100vh; overflow: hidden;overflow-y: auto !important; max-height: 100vh">
+                     style="height: 100vh; overflow: hidden;overflow-y: auto !important; max-height: 500px">
                     @for($i=1; $i<=\App\Models\Meter::getLength(); $i++)
                         <div class="row">
                             <!--begin::Mixed Widget 14-->

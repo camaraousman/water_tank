@@ -27,9 +27,25 @@
                     </div>
                 </div>
                 <div class="col-md-4 text-left mt-9">
-                    <button type="button" name="filter" id="filter" class="btn btn-info btn-sm">
+                    <button type="button" name="filter" id="filter" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">
+                        <!--begin::Svg Icon | path: icons/duotune/general/gen031.svg-->
+                        <span class="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M19.0759 3H4.72777C3.95892 3 3.47768 3.83148 3.86067 4.49814L8.56967 12.6949C9.17923 13.7559 9.5 14.9582 9.5 16.1819V19.5072C9.5 20.2189 10.2223 20.7028 10.8805 20.432L13.8805 19.1977C14.2553 19.0435 14.5 18.6783 14.5 18.273V13.8372C14.5 12.8089 14.8171 11.8056 15.408 10.964L19.8943 4.57465C20.3596 3.912 19.8856 3 19.0759 3Z" fill="currentColor" />
+                            </svg>
+                        </span>
                         Filtrele</button>
                     <button type="button" name="refresh" id="refresh" class="btn btn-warning btn-sm">Temizle</button>
+
+                    <!-- Exportables-->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Veri Aktar</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" id="print" href="#">Yazdır</a>
+                            <a class="dropdown-item" id="excel" href="#">Excel'e Aktar</a>
+                            <a class="dropdown-item" id="pdf" href="#">PDF dosyası İndir</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,11 +72,18 @@
 @endsection
 
 @section('extra_script')
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js'></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+    <!-- DataTable -->
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.flash.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js" type="text/javascript"></script>
 
     <script>
         //begin datepicker
@@ -86,7 +109,7 @@
                 }
                 else
                 {
-                    alert('Both Date is required');
+                    alert('lütfen 2 tarih aralığı seçin');
                 }
             });
 
@@ -98,6 +121,20 @@
                     serverSide: true,
                     autoWidth: false,
                     pageLength: 5,
+                    buttons: [
+                        {
+                            text: 'excel',
+                            extend: 'excelHtml5',
+                        },
+                        {
+                            text: 'pdf',
+                            extend: 'pdfHtml5',
+                        },
+                        {
+                            text: 'print',
+                            extend: 'print',
+                        },
+                    ],
                     language: {
                         "lengthMenu": "_MENU_ Sayfa boyutunu seçin",
                         "emptyTable":     "Tabloda veri yok",
@@ -140,6 +177,21 @@
                     ]
                 });
             }
+
+            //exportables
+            $('#print').click(function(e){
+                e.preventDefault();
+                var table =  $('.datatable').DataTable();
+                table.button('.buttons-print').trigger();
+            });$('#excel').click(function(e){
+                e.preventDefault();
+                var table =  $('.datatable').DataTable();
+                table.button('.buttons-excel').trigger();
+            });$('#pdf').click(function(e){
+                e.preventDefault();
+                var table =  $('.datatable').DataTable();
+                table.button('.buttons-pdf').trigger();
+            });
 
             //remove filter and clear page
             $('#refresh').click(function(){

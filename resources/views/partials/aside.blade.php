@@ -93,7 +93,7 @@
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
-                                    <span class="menu-title">Metre Raporu</span>
+                                    <span class="menu-title">Motor Raporu</span>
                                 </a>
                             </div>
                         </div>
