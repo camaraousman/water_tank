@@ -11,4 +11,27 @@
 }
 
 
+#tab1, #tab2 {
+    width: 100px;
+    height: 25px;
+    border-color: #349beb;
+    background-color: white;
+    border-radius: 7px;
+}
+#hr {
+    border-color: blue;
+}
+.highlight {
+    font-family: Comic Sans ms;
+    color: blue;
+}
+
+#header {
+    font-family: sans-serif;
+    text-align: center;
+}
+
+button:hover {
+    background-color: red;
+}
 
