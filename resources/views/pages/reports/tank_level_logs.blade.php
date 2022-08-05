@@ -16,7 +16,7 @@
 
                 <div id="buttons">
                     <button id="tab1"><b>Tablo</b></button>
-                    <button id="tab2"><b>Çizgi</b></button>
+                    <button id="tab2"><b>Çizim</b></button>
                     <!--Add more buttons here-->
                 </div>
                 <hr id="hr" />
@@ -53,11 +53,11 @@
                             </svg>
                         </span>
                                         Filtrele</button>
-                                    <button type="button" name="refresh" id="refresh" class="btn btn-warning btn-sm">Temizle</button>
+                                    <button type="button" name="refresh" id="refresh" class="btn btn-sm btn-flex btn-light btn-active-warning fw-bolder btn-sm">Temizle</button>
 
                                     <!-- Exportables-->
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Veri Aktar</button>
+                                        <button type="button" class="btn btn-sm btn-flex btn-light-info  fw-bolder dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Veri Aktar</button>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" id="print" href="#">Yazdır</a>
                                             <a class="dropdown-item" id="excel" href="#">Excel'e Aktar</a>
@@ -75,10 +75,9 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>tank_id </th>
-                                        <th>water_level</th>
-                                        <th>Created at</th>
-                                        <th>Updated at</th>
+                                        <th>Tank Numarası </th>
+                                        <th>Su Seviyesi</th>
+                                        <th>Oluşturulan Tarihi</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -87,10 +86,23 @@
                     </div>
 
                     <div id="Hidenews">
+                        <div class="row mb-5">
+                                <div class="col-md-2 text-right mt-9">
+                                    <button type="button" name="filter" id="filter" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">Günlük Raporu</button>
+                                </div><div class="col-md-2 text-right mt-9">
+                                    <button type="button" name="filter" id="filter" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">Haftalık Raporu</button>
+                                </div><div class="col-md-2 text-right mt-9">
+                                    <button type="button" name="filter" id="filter" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">Aylık Raporu</button>
+                                </div><div class="col-md-2 text-right mt-9">
+                                    <button type="button" name="filter" id="filter" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">Yıllık Raporu</button>
+                                </div>
+                        </div>
+
+
                         <div id="kt_content_container" class="container-xxl ">
                             <!--begin::Row-->
                             <div class="row gx-5 gx-xl-10">
-                                <canvas id="myChart"></canvas>
+                                <canvas id="myChart" height="170px"></canvas>
                             </div>
 
                         </div>
@@ -127,41 +139,74 @@
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js" type="text/javascript"></script>
     <script src="{{asset('assets/js/custom/custom.js')}}"></script>
 
-    <!--begin::chart-->
+
+
     <script>
-        const labels = ['January', 'February', 'March', 'April', 'May', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-        const data = {
-            labels: labels,
-            datasets: [
-                {
-                label: 'Tank 1',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 10, 5, 2, 20, 30, 45, 30, 55, 25, 30, 44],
-                },
-                {
-                    label: 'Tank 2',
-                    backgroundColor: 'rgb(52, 140, 235)',
-                    borderColor: 'rgb(52, 140, 235)',
-                    data: [10, 15, 14, 12, 15, 20, 30, 35, 45, 40, 35, 30],
-                }
-                ]
-        };
-
-        const config = {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        var data
+        const myChart = new Chart(ctx, {
             type: 'line',
-            data: data,
-            options: {}
-        };
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                    label: 'Tank 1',
+                    data: [],
+                    backgroundColor: 'transparent',
+                    borderColor: 'red',
+                    borderWidth: 4
+                    },
+                    {
+                        label: 'Tank 2',
+                        data: [],
+                        backgroundColor: 'transparent',
+                        borderColor: 'green',
+                        borderWidth: 4
+                    }
+                    ]
+            },
+            options: {
+                elements:{
+                    line:{
+                        tension:0
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
 
-        <!--render::chart-->
-        const myChart = new Chart(
-            document.getElementById('myChart'),
-            config
-        );
+        var updateTank1 = function(){
+            $.ajax({
+                url: "{{route('metercontrollogs.getGraph')}}",
+                type: 'GET',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data){
+                    myChart.data.labels = data.labels;
+                    myChart.data.datasets[0].data = data.data;
+
+                    myChart.data.labels = data.labels;
+                    myChart.data.datasets[1].data = data.data2;
+                    myChart.update();
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
+        }
+
+        updateTank1();
+        // setInterval(() => {
+        //     updateTank1();
+        // }, 1000);
     </script>
-    <!--end::chart-->
+
 
     <!--begin::Datatable-->
     <script>
@@ -175,7 +220,8 @@
             $('.input-daterange').datepicker({
                 todayBtn: 'linked',
                 format: 'yyyy-mm-dd',
-                autoclose: true
+                autoclose: true,
+                orientation: 'bottom'
             });
 
             $('#filter').click(function(){
@@ -249,7 +295,6 @@
                         {data: 'tank_id', name: 'tank_id'},
                         {data: 'water_level', name: 'water_level'},
                         {data: 'created_at', name: 'created_at'},
-                        {data: 'updated_at', name: 'updated_at'},
                     ]
                 });
             }

@@ -15,6 +15,7 @@ class Services extends Controller
         $message = '';
         $status = -1;
         $switch = -1;
+        $meter_id= -1;
 
         try{
             DB::beginTransaction();
@@ -26,7 +27,7 @@ class Services extends Controller
             foreach ($timeout_results as $timeout_result){
                 MeterOpenCloseLog::create([
                     'user_id'       => $timeout_result->user_id,
-                    'meter_id'       => $timeout_result->user_id,
+                    'meter_id'       => $timeout_result->meter_id,
                     'switch'        => $timeout_result->switch,
                     'status'        => 0,       //timed out records
                     'requested_at'  => $timeout_result->requested_at,
@@ -38,11 +39,13 @@ class Services extends Controller
             //handle meter open/close requests
             $last_request = MeterOpenCloseRequest::get()->first();
 
+
             if($last_request != NULL){
+                $meter_id = $last_request->meter_id;
                 $switch = $last_request->switch;
                 MeterOpenCloseLog::create([
                     'user_id'       => $last_request->user_id,
-                    'meter_id'       => $last_request->meter_id,
+                    'meter_id'      => $meter_id,
                     'switch'        => $last_request->switch,
                     'status'        => 1,       //executed records
                     'requested_at'  => $last_request->requested_at,
@@ -50,10 +53,13 @@ class Services extends Controller
                 ]);
 
                 MeterOpenCloseRequest::where('id', '=', $last_request['id'])->delete();
+                $message = 'success';
+                $status = 1;
+            }else{
+                $message = "motor acma istegi yok";
             }
             DB::commit();
-            $message = 'success';
-            $status = 1;
+
         }catch (QueryException $ex){
             $message = $ex->getMessage();
             DB::rollBack();
@@ -63,6 +69,7 @@ class Services extends Controller
             'MESSAGE'   => $message,
             'STATUS'    => $status,
             'SWITCH'    =>$switch,
+            'METER_ID'  => $meter_id
         ]);
     }
 }

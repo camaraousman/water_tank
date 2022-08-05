@@ -23,6 +23,7 @@ class ALarmLogController extends Controller
             } else {
                 $data = DB::table('alarm_logs')->orderBy('created_at', 'desc')->get();
             }
+
             return DataTables::of($data)->make(true);
         }
     }

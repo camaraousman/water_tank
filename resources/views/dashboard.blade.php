@@ -93,8 +93,6 @@
 
                 <!--begin::start_stop switch-->
                 <!--begin::Col-->
-
-
                 <div class="col-xxl-4 mb-5 mb-xl-10 "
                      style="height: 100vh; overflow: hidden;overflow-y: auto !important; max-height: 500px">
                     @for($i=1; $i<=\App\Models\Meter::getLength(); $i++)
@@ -135,30 +133,7 @@
                             <!--end::Mixed Widget 14-->
                         </div>
                     @endfor
-
-                    {{--                    <div class="row">--}}
-                    {{--                        <!--begin::Mixed Widget 14-->--}}
-                    {{--                        <div class="card card-xxl-stretch mb-5 mb-xl-8" style="background-color: #db8888; color: #fff">--}}
-                    {{--                            <!--begin::Body-->--}}
-                    {{--                            <div class="card-body d-flex flex-column">--}}
-                    {{--                                <!--begin::Wrapper-->--}}
-                    {{--                                <div class="d-flex flex-column mb-0">--}}
-                    {{--                                    <div class="pt-5">--}}
-
-                    {{--                                        <form action="{{route('close_meter')}}" method="post">--}}
-                    {{--                                            @csrf--}}
-                    {{--                                            <span class="badge badge-light-danger fs-8">Not:</span>&#160; Buradan metreyi Kapatabilirsiniz--}}
-                    {{--                                            <button class="btn btn-light-primary w-100 py-3 mt-4">Kapat</button>--}}
-                    {{--                                        </form>--}}
-                    {{--                                    </div>--}}
-                    {{--                                </div>--}}
-                    {{--                                <!--end::Wrapper-->--}}
-                    {{--                            </div>--}}
-                    {{--                        </div>--}}
-                    {{--                        <!--end::Mixed Widget 14-->--}}
-                    {{--                    </div>--}}
                 </div>
-
             </div>
             <!--end::Row-->
         </div>

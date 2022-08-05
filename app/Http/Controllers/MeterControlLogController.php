@@ -17,21 +17,44 @@ class MeterControlLogController extends Controller
         return $meterControlLogsDatatables->render('pages.reports.meter_open_close_logs');
     }
 
+    //get datatable data
     public function fetchAll(Request $request){
-
-
         if ($request->ajax()) {
             if ($request->from_date != '' && $request->to_date != '') {
-                $data = DB::table('meter_open_close_logs')
+                $queries = DB::table('meter_open_close_logs')
                     ->whereBetween('created_at', array($request->from_date, $request->to_date))
                     ->get();
             } else {
-                $data = DB::table('meter_open_close_logs')->orderBy('created_at', 'desc')->get();
+                $queries = DB::table('meter_open_close_logs')->orderBy('created_at', 'desc')->get();
             }
 
-            return DataTables::of($data)->make(true);
+            //human readability
+            foreach ($queries as $query){
+                $user = User::where('id', '=', $query->user_id)->get()->first();
+                $meter = Meter::where('id', '=', $query->meter_id)->get()->first();
+                $query->switch = $query->switch == 0 ? "Motor Kapatma" : "Motor Açma";
+                $query->status = $query->status == 0 ? "işlem başarısız" : "işlem başarılı";
+
+                $query->user_id = $user->name;
+                $query->meter_id = $meter->name;
+            }
+
+
+            return DataTables::of($queries)->make(true);
         }
     }
+
+
+    //get graph data
+    public function getGraph(){
+        $labels = ['January', 'February', 'March', 'April', 'May', 'June'];
+        $data = [3, 19, 3, 5, 2, 3];
+        $data2 = [9, 19, 10, 5, 8, 3];
+
+
+        return response()->json(compact('labels', 'data', 'data2'));
+    }
+
 
     public function store(Request $request){
         $message='';

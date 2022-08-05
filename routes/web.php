@@ -105,6 +105,7 @@ Route::prefix('logs')->group(
             function() {
                 Route::get('/', [MeterControlLogController::class, 'index'])->name('index')->middleware(['auth']);
                 Route::post('/fetchall', [MeterControlLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
+                Route::get('/getGraph', [MeterControlLogController::class, 'getGraph'])->name('getGraph')->middleware(['auth']);
                 //begin api routes
                 Route::post('/store', [MeterControlLogController::class, 'store'])->name('store');
             }

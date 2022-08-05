@@ -35,12 +35,4 @@ class TankController extends Controller
         return $str;
     }
 
-    public function test(){
-        $data = Tank::create([
-            'name'       => 'tank 1',
-            'water_level'   => rand(30,70),
-        ]);
-
-        return ($data->water_level);
-    }
 }

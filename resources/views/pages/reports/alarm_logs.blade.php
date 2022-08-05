@@ -35,11 +35,11 @@
                             </svg>
                         </span>
                         Filtrele</button>
-                    <button type="button" name="refresh" id="refresh" class="btn btn-warning btn-sm">Temizle</button>
+                    <button type="button" name="refresh" id="refresh" class="btn btn-sm btn-flex btn-light btn-active-warning fw-bolder btn-sm">Temizle</button>
 
                     <!-- Exportables-->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Veri Aktar</button>
+                        <button type="button" class="btn btn-light-info dropdown-toggle dropdown-toggle btn-sm " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Veri Aktar</button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" id="print" href="#">Yazdır</a>
                             <a class="dropdown-item" id="excel" href="#">Excel'e Aktar</a>
@@ -58,11 +58,9 @@
                         <th>#</th>
                         <th>Slug</th>
                         <th>Desc</th>
-                        <th>Requested at</th>
-                        <th>Action at</th>
-                        <th>Status</th>
-                        <th>Created at</th>
-                        <th>Updated at</th>
+                        <th>Taleb Tarihi</th>
+                        <th>İşletim Tarihi</th>
+                        <th>Durumu</th>
                     </tr>
                     </thead>
                 </table>
@@ -172,8 +170,6 @@
                         {data: 'requested_at', name: 'requested_at'},
                         {data: 'action_at', name: 'action_at'},
                         {data: 'status', name: 'status'},
-                        {data: 'created_at', name: 'created_at'},
-                        {data: 'updated_at', name: 'updated_at'},
                     ]
                 });
             }
