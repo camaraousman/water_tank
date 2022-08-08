@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TankLevelLog;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -9,14 +12,16 @@ class TestController extends Controller
 {
     public function test()
     {
-        $data = DB::table('meter_open_close_logs')->orderBy('created_at', 'desc')->get();
+        list($arr1, $arr2) = $this->myfunction();
 
-        $objs = $data;
+        dump($arr2);
+    }
 
+    public function myfunction(){
+        $arr1 = [2,3,5,6];
+        $arr2 = [2,5,6,6];
 
-
-        dump(count($data));
-        dump($objs);
+        return array($arr1, $arr2);
     }
 
     public function fetch_data(Request $request){
@@ -24,7 +29,3 @@ class TestController extends Controller
     }
 }
 
-class Profile{
-    public $name;
-    public $surname;
-}

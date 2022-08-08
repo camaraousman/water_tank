@@ -88,13 +88,13 @@
                     <div id="Hidenews">
                         <div class="row mb-5">
                                 <div class="col-md-2 text-right mt-9">
-                                    <button type="button" name="filter" id="filter" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">Günlük Raporu</button>
+                                    <button type="button" name="filter" id="daily" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">Günlük Raporu</button>
                                 </div><div class="col-md-2 text-right mt-9">
-                                    <button type="button" name="filter" id="filter" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">Haftalık Raporu</button>
+                                    <button type="button" name="filter" id="weekly" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">Haftalık Raporu</button>
                                 </div><div class="col-md-2 text-right mt-9">
-                                    <button type="button" name="filter" id="filter" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">Aylık Raporu</button>
+                                    <button type="button" name="filter" id="monthly" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">Aylık Raporu</button>
                                 </div><div class="col-md-2 text-right mt-9">
-                                    <button type="button" name="filter" id="filter" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">Yıllık Raporu</button>
+                                    <button type="button" name="filter" id="yearly" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder btn-sm">Yıllık Raporu</button>
                                 </div>
                         </div>
 
@@ -142,8 +142,9 @@
 
 
     <script>
+        let id=0;
         const ctx = document.getElementById('myChart').getContext('2d');
-        var data
+        var data;
         const myChart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -179,20 +180,23 @@
             }
         });
 
-        var updateTank1 = function(){
+        var updateTank = function(id){
             $.ajax({
-                url: "{{route('metercontrollogs.getGraph')}}",
+                url: "{{route('tanklevellogs.getGraph')}}",
                 type: 'GET',
                 dataType: 'json',
+                data: {
+                    id: id
+                },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (data){
                     myChart.data.labels = data.labels;
-                    myChart.data.datasets[0].data = data.data;
+                    myChart.data.datasets[0].data = data.tank_1;
 
                     myChart.data.labels = data.labels;
-                    myChart.data.datasets[1].data = data.data2;
+                    myChart.data.datasets[1].data = data.tank_2;
                     myChart.update();
                 },
                 error: function(data){
@@ -200,11 +204,24 @@
                 }
             });
         }
+        //load yearly by default
+        updateTank(0);
 
-        updateTank1();
-        // setInterval(() => {
-        //     updateTank1();
-        // }, 1000);
+
+        $('#yearly').click(function (){
+            updateTank(0);
+        });
+        $('#monthly').click(function (){
+            updateTank(1);
+        });
+        $('#weekly').click(function (){
+            updateTank(2);
+        });
+        $('#daily').click(function (){
+            updateTank(3);
+        });
+
+
     </script>
 
 

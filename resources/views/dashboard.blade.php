@@ -197,7 +197,7 @@
                                     "type": "Text",
                                     "fontSize": "20",
                                     "fillcolor": "#333333",
-                                    "text": "Loading...",
+                                    "text": "Yükleniyor...",
                                     "x": "$chartCenterX-60",
                                     "y": "$chartEndY-60"
                                 }]
@@ -291,7 +291,7 @@
                                     "type": "Text",
                                     "fontSize": "20",
                                     "fillcolor": "#333333",
-                                    "text": "Loading...",
+                                    "text": "Yükleniyor...",
                                     "x": "$chartCenterX-60",
                                     "y": "$chartEndY-60"
                                 }]

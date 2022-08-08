@@ -45,16 +45,6 @@ class MeterControlLogController extends Controller
     }
 
 
-    //get graph data
-    public function getGraph(){
-        $labels = ['January', 'February', 'March', 'April', 'May', 'June'];
-        $data = [3, 19, 3, 5, 2, 3];
-        $data2 = [9, 19, 10, 5, 8, 3];
-
-
-        return response()->json(compact('labels', 'data', 'data2'));
-    }
-
 
     public function store(Request $request){
         $message='';

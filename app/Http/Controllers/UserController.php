@@ -53,7 +53,7 @@ class UserController extends Controller
     // handle insert a new user ajax request
     public function store(Request $request, User $user) {
         $validator = \Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|min:2|max:50',
             'password' => 'required|min:6|max:50',
             'password_confirmation' => 'required|same:password|min:6|max:50'
         ]);

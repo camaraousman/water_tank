@@ -91,6 +91,7 @@ Route::prefix('logs')->group(
                 Route::get('/', [TankLevelLogController::class, 'index'])->name('index')->middleware(['auth']);
                 Route::post('/store', [TankLevelLogController::class, 'store'])->name('store');
                 Route::post('/fetchall', [TankLevelLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
+                Route::get('/getGraph', [TankLevelLogController::class, 'getGraph'])->name('getGraph')->middleware(['auth']);
             }
         );
         Route::prefix('alarmlogs')->as('alarmlogs.')->group(
@@ -105,7 +106,7 @@ Route::prefix('logs')->group(
             function() {
                 Route::get('/', [MeterControlLogController::class, 'index'])->name('index')->middleware(['auth']);
                 Route::post('/fetchall', [MeterControlLogController::class, 'fetchAll'])->name('fetchAll')->middleware(['auth']);
-                Route::get('/getGraph', [MeterControlLogController::class, 'getGraph'])->name('getGraph')->middleware(['auth']);
+
                 //begin api routes
                 Route::post('/store', [MeterControlLogController::class, 'store'])->name('store');
             }
