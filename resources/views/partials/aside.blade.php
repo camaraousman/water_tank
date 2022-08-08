@@ -4,7 +4,7 @@
     <div class="aside-logo flex-column-auto" id="kt_aside_logo">
         <!--begin::Logo-->
         <a href="{{route('dashboard')}}">
-            <img alt="Logo" src="{{asset('assets/media/logos/teta_only_logo.png')}}" class="h-35px logo" />
+            <img alt="Logo" src="{{asset('assets/media/logos/image.png')}}" class="h-55px w-65px logo" />
         </a>
         <!--end::Logo-->
         <!--begin::Aside toggler-->
