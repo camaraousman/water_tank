@@ -37,12 +37,12 @@
                 <!--begin::Content-->
                 <div class="d-flex flex-row-fluid flex-column text-center p-10 pt-lg-20">
                     <!--begin::Logo-->
-                    <a href="../../demo1/dist/index.html" class="py-9 mb-5">
-                        <img alt="Logo" src="assets/media/logos/teta_logo.png" class="h-100px" />
-                    </a>
+{{--                    <a href="../../demo1/dist/index.html" class="py-9 mb-5">--}}
+{{--                        <img alt="Logo" src="assets/media/logos/image.png" class="h-100px" />--}}
+{{--                    </a>--}}
                     <!--end::Logo-->
                     <!--begin::Title-->
-                    <p class="fw-bolder fs-2qx pb-5 pb-md-10" style="color: #986923;">Powered by Teta Elektronik</p>
+                    <p class="fw-bolder fs-2qx pb-5 pb-md-10" style="color: #986923;">Water Tank </p>
                     <!--end::Title-->
 
                 </div>
